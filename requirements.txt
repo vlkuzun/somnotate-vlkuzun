@@ -1,0 +1,9 @@
+numpy<1.25.0
+matplotlib
+scikit-learn
+pomegranate<1.0.0
+pyedflib
+lspopt
+h5py
+pandas
+seaborn
