@@ -7,3 +7,4 @@ lspopt
 h5py
 pandas
 seaborn
+statsmodels

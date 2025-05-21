@@ -60,11 +60,13 @@ def main(paths, save_path=None, dpi=600):
     
     plt.tight_layout()
     
+    # Save the figure if a save path is provided
     if save_path:
-        plt.savefig(save_path, dpi=dpi, bbox_inches='tight')
-        print(f"Figure saved to {save_path} with DPI={dpi}")
-    else:
-        plt.show()
+        plt.savefig(save_path, bbox_inches='tight', format='eps')
+        print(f"Figure saved to {save_path}")
+    
+    # Always show the plot
+    plt.show()
 
 
 if __name__ == "__main__":
@@ -76,21 +78,14 @@ if __name__ == "__main__":
         path, label = entry.split(",")
         paths[path.strip()] = label.strip()
     
-    save_option = input("Do you want to save the figure? (yes/no): ").strip().lower()
-    if save_option == 'yes':
-        save_dir = input("Enter directory to save the figure (or press Enter for current directory): ").strip()
-        save_filename = input("Enter filename (without extension): ").strip()
-        dpi_input = input("Enter DPI (default is 600): ").strip()
-        
-        if not save_dir:
-            save_dir = os.getcwd()
-        
-        dpi = 600 if not dpi_input else int(dpi_input)
-        save_path = os.path.join(save_dir, f"{save_filename}.png")
-        main(paths, save_path, dpi)
-    else:
-        main(paths)
-
+    # Define a fixed save path directly combining directory and filename
+    save_path = '/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/eps/somnotate_vs_manual_similarity_matrix.eps'
+    
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    
+    # Run the main function to create, save and display the plot
+    main(paths, save_path)
 
 
 # Example input:

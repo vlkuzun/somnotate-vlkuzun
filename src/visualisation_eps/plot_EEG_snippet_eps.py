@@ -83,9 +83,7 @@ fig.legend(handles=handles, loc='upper center', bbox_to_anchor=(0.93, 1.01), nco
 
 plt.tight_layout(rect=[0, 0.05, 1, 0.93])  # Adjust layout to leave space for the legend and x-axis label
 
-# Save figure with high resolution (600 DPI)
-plt.savefig('/Volumes/harris/volkan/somnotate/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.png', dpi=600, bbox_inches='tight')
 # Save figure as EPS (vector format)
-plt.savefig('/Volumes/harris/volkan/somnotate/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.eps', format='eps', bbox_inches='tight')
+plt.savefig('/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/eps/somno_vs_manual_eeg_snippet.eps', format='eps', bbox_inches='tight')
 
 plt.show()
