@@ -81,6 +81,25 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
     xticks = []
     xlabels = []
 
+    # Modified color palette with grey decreasing in darkness:
+    # 1st (somnotate Light): blue
+    # 2nd (fp Light): darkest grey
+    # 3rd (bh Light): medium grey 
+    # 4th (vu Light): lightest grey
+    # 5th (somnotate Dark): blue
+    # 6th (fp Dark): darkest grey (same as 2nd)
+    # 7th (bh Dark): medium grey (same as 3rd)
+    # 8th (vu Dark): lightest grey (same as 4th)
+    color_palette = ['#1f77b4', '#333333', '#777777', '#AAAAAA', '#1f77b4', '#333333', '#777777', '#AAAAAA']
+    
+    # Create color mapping for each subject-period combination
+    color_map = {}
+    idx = 0
+    for period in time_periods:
+        for subject in subjects:
+            color_map[(subject, period)] = color_palette[idx]
+            idx += 1
+
     color_palette = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
     subject_colors = dict(zip(subjects, color_palette))
 
@@ -103,7 +122,7 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
                 np.random.normal(loc=plot_index, scale=0.15, size=len(subset)), # Jittered x-axis positions
                 subset['boutDuration'], # Y-axis: bout duration
                 alpha=0.6, s=40, label=f"{subject} ({period})" if period == 'Light' else None,
-                color=subject_colors[subject]
+                color=color_map[(subject, period)]
             )
 
             # Store x-tick position and label

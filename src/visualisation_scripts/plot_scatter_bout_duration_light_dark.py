@@ -81,8 +81,24 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
     xticks = []
     xlabels = []
 
-    color_palette = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
-    subject_colors = dict(zip(subjects, color_palette))
+    # Modified color palette with grey decreasing in darkness:
+    # 1st (somnotate Light): blue
+    # 2nd (fp Light): darkest grey
+    # 3rd (bh Light): medium grey 
+    # 4th (vu Light): lightest grey
+    # 5th (somnotate Dark): blue
+    # 6th (fp Dark): darkest grey (same as 2nd)
+    # 7th (bh Dark): medium grey (same as 3rd)
+    # 8th (vu Dark): lightest grey (same as 4th)
+    color_palette = ['#1f77b4', '#333333', '#777777', '#AAAAAA', '#1f77b4', '#333333', '#777777', '#AAAAAA']
+    
+    # Create color mapping for each subject-period combination
+    color_map = {}
+    idx = 0
+    for period in time_periods:
+        for subject in subjects:
+            color_map[(subject, period)] = color_palette[idx]
+            idx += 1
 
     # Explicitly calculate x positions before plotting
     x_positions = []
@@ -103,7 +119,7 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
                 np.random.normal(loc=plot_index, scale=0.15, size=len(subset)), # Jittered x-axis positions
                 subset['boutDuration'], # Y-axis: bout duration
                 alpha=0.6, s=40, label=f"{subject} ({period})" if period == 'Light' else None,
-                color=subject_colors[subject]
+                color=color_map[(subject, period)]
             )
 
             # Store x-tick position and label
@@ -116,11 +132,7 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
     bax.set_xticklabels(['', 'somnotate (Light)', 'fp (Light)', 'bh (Light)', 'vu (Light)', 'somnotate (Dark)', 'fp (Dark)', 'bh (Dark)', 'vu (Dark)'], rotation=45, ha='right', fontsize=32)
     bax.set_ylabel('Bout Duration (seconds)', fontsize=32, labelpad=100)
 
-
     bax.tick_params(axis='y', labelsize=32)
-    
-    # Remove title
-    # fig.suptitle('Bout Duration Comparison across Light and Dark Phases', fontsize=26)
     
     # Remove top and right spines for cleaner plot
     for ax in bax.axs:
@@ -150,7 +162,6 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
             *[group['boutDuration'].values for _, group in group_data.groupby('subject')]
         )
         print(f"One-way ANOVA results for {period} group: F-statistic = {anova_result.statistic:.2f}, p-value = {anova_result.pvalue:.3g}")
-
 
 # Example usage:
 analyze_bout_durations_light_dark_phase(
