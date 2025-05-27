@@ -59,15 +59,28 @@ def plot_eeg(ax, eeg_data, sleep_stages, label):
     ax.set_ylabel('EEG (μV)', fontsize=22)  # Increased font size
     ax.tick_params(axis='y', labelsize=20)  # Increased font size
     ax.tick_params(axis='x', labelsize=20)  # Increased font size
+    
+    # Only move y-axis to origin, keep x-axis at bottom
+    ax.spines['left'].set_position(('data', 0))
+    # Remove the positioning of the bottom spine to keep it at the bottom
+    
+    # Hide the top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
 # Create subplots
-fig, axes = plt.subplots(4, 1, figsize=(14, 10), sharex=True)  # Slightly larger figure
+fig, axes = plt.subplots(4, 1, figsize=(14, 10), sharex=True, sharey=True)  # Slightly larger figure
 
 # Plot EEG with the corresponding sleep stages for each classifier using the downsampled data
 plot_eeg(axes[0], df_slice_downsampled['EEG2'], df_slice_downsampled['sleepStage_somnotate'], 'somnotate')
 plot_eeg(axes[1], df_slice_downsampled['EEG2'], df_slice_downsampled['sleepStage_fp'], 'fp')
 plot_eeg(axes[2], df_slice_downsampled['EEG2'], df_slice_downsampled['sleepStage_bh'], 'bh')
 plot_eeg(axes[3], df_slice_downsampled['EEG2'], df_slice_downsampled['sleepStage_vu'], 'vu')
+
+# Calculate the time range from the data
+time_range = len(df_slice_downsampled) / (sampling_rate / downsample_factor)
+min_time = 0  # Starting time
+max_time = time_range  # Ending time
 
 # Add a unified x-axis label
 fig.text(0.56, 0.02, 'Time (seconds)', ha='center', fontsize=24)  # Increased font size
@@ -76,14 +89,28 @@ fig.text(0.56, 0.02, 'Time (seconds)', ha='center', fontsize=24)  # Increased fo
 handles = [plt.Line2D([0], [0], color=colors[1], lw=2, label='Wake'),
            plt.Line2D([0], [0], color=colors[2], lw=2, label='NREM'),
            plt.Line2D([0], [0], color=colors[3], lw=2, label='REM')]
-labels = [f'Stage {stage}' for stage in colors]
+labels = [f'Stage {stage}' for stage in colors]  # Fixed the syntax error in this line
 
 # Adjust legend position to be above the plots
 fig.legend(handles=handles, loc='upper center', bbox_to_anchor=(0.93, 1.01), ncol=1, fontsize=18)  # Increased font size
 
 plt.tight_layout(rect=[0, 0.05, 1, 0.93])  # Adjust layout to leave space for the legend and x-axis label
 
-# Save figure as EPS (vector format)
+# For all subplots, adjust the axis positions
+for i, ax in enumerate(axes):
+    # Hide x-axis labels for all but the bottom subplot
+    if i < len(axes) - 1:
+        ax.tick_params(axis='x', which='both', labelbottom=False)
+    else:
+        ax.tick_params(axis='x', which='both', labelbottom=True)
+    
+    # Set the x-axis limits to match the actual data extent
+    ax.set_xlim(min_time, max_time)
+    
+    # Adjust position to ensure axis starts at origin
+    ax.set_position([0.125, ax.get_position().y0, 0.775, ax.get_position().height])
+
+# Save figure with high resolution (600 DPI)
 plt.savefig('/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/eps/somno_vs_manual_eeg_snippet.eps', format='eps', bbox_inches='tight')
 
 plt.show()

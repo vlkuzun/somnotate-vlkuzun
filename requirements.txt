@@ -8,3 +8,6 @@ h5py
 pandas
 seaborn
 statsmodels
+
+# Using pip install for the following packages
+brokenaxes

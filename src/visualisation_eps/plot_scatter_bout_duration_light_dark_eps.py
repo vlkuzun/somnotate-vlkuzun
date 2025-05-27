@@ -136,16 +136,14 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
         ax.spines['right'].set_visible(False)
 
     # Save the combined plot with higher DPI
-    combined_plot_filename = f"{output_folder}/all_subjects_combined_bout_durations_light_and_dark_updated.png"
-    plt.savefig(combined_plot_filename, bbox_inches='tight', dpi=600)
+    combined_plot_filename = f"{output_folder}/all_subjects_combined_bout_durations_light_and_dark.eps"
+    plt.savefig(combined_plot_filename, bbox_inches='tight')
 
     # Shift entire graph up by adjusting the bottom margin
     plt.subplots_adjust(bottom=0.25)  # Reduce the bottom space
 
     plt.show()
     plt.close()
-
-    print("Plot with broken axis saved successfully at 600 DPI.")
 
     # Perform a t-test to check for statistical differences between Light and Dark phases
     light_data = pooled_data[pooled_data['timePeriod'] == 'Light']['boutDuration']
@@ -166,11 +164,11 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
 # Example usage:
 analyze_bout_durations_light_dark_phase(
     file_subject_dict={
-        "/Volumes/harris/volkan/somnotate/somnotate_performance/automated_state_annotationoutput_sub-010_ses-01_recording-01_timestamped_sr-1hz.csv": "somnotate",
-        "/Volumes/harris/volkan/somnotate/somnotate_performance/sub-010_ses-01_recording-01_data-sleepscore_fp_timestamped_sr-1hz.csv": "fp",
-        "/Volumes/harris/volkan/somnotate/somnotate_performance/sub-010_ses-01_recording-01_export(HBH)_timestamped_sr-1hz.csv": 'bh',
-        "/Volumes/harris/volkan/somnotate/somnotate_performance/sub-010_ses-01_recording-01_data-sleepscore_vu_timestamped_sr-1hz.csv": "vu"
+        "/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/automated_state_annotationoutput_sub-010_ses-01_recording-01_timestamped_sr-1hz.csv": "somnotate",
+        "/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/sub-010_ses-01_recording-01_data-sleepscore_fp_timestamped_sr-1hz.csv": "fp",
+        "/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/sub-010_ses-01_recording-01_export(HBH)_timestamped_sr-1hz.csv": 'bh',
+        "/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/sub-010_ses-01_recording-01_data-sleepscore_vu_timestamped_sr-1hz.csv": "vu"
     },
 
-    output_folder="/Volumes/harris/volkan/somnotate/plots/bout_duration/light_dark_bout_duration"
+    output_folder="/Volumes/harris/volkan/somnotate-vlkuzun/plots/bout_duration/light_dark_bout_duration/eps"
 )
