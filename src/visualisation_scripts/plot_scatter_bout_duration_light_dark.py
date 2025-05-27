@@ -66,7 +66,14 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
 
     # Create the plot with broken axis
     fig = plt.figure(figsize=(16, 12))
-    bax = brokenaxes(ylims=((0, 8400), (14000, pooled_data['boutDuration'].max()+100)), hspace=0.05, fig=fig)
+    
+    # Adjust the figure margins before creating the brokenaxes
+    # This shifts the entire plotting area including all axes
+    plt.subplots_adjust(bottom=0.25)
+    
+    # Create the brokenaxes plot on the pre-adjusted figure
+    bax = brokenaxes(ylims=((0, 8400), (14000, pooled_data['boutDuration'].max()+100)), 
+                    hspace=0.1, fig=fig)
 
     # Define unique x-tick positions for light and dark phases for each subject
     subjects = ['somnotate', 'fp', 'bh', 'vu']
@@ -112,33 +119,6 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
 
     bax.tick_params(axis='y', labelsize=32)
     
-    # Increased font size for tick labels on the broken part
-    # Fix the attribute error by safely accessing the attributes
-    # Safely try multiple approaches to access and style the diagonal lines
-    try:
-        # First approach - newer versions of brokenaxes
-        for ax in bax.diag:
-            ax.tick_params(axis='y', labelsize=32)
-    except (AttributeError, TypeError):
-        try:
-            # Second approach - try d attribute
-            for ax in bax.d.values():
-                ax.tick_params(axis='y', labelsize=32)
-        except (AttributeError, TypeError):
-            try:
-                # Third approach - try diag_handles
-                for ax in bax.diag_handles:
-                    ax.tick_params(axis='y', labelsize=32)
-            except (AttributeError, TypeError):
-                print("Warning: Could not access diagonal axes to change font size.")
-                # If possible, we can customize the appearance directly:
-                try:
-                    for d in bax.diag:
-                        d.set_color('black')
-                        d.set_linewidth(1.5)
-                except:
-                    pass
-    
     # Remove title
     # fig.suptitle('Bout Duration Comparison across Light and Dark Phases', fontsize=26)
     
@@ -150,10 +130,7 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
     # Save the combined plot with higher DPI
     combined_plot_filename = f"{output_folder}/all_subjects_combined_bout_durations_light_and_dark_updated.png"
     plt.savefig(combined_plot_filename, bbox_inches='tight', dpi=600)
-
-    # Shift entire graph up by adjusting the bottom margin
-    plt.subplots_adjust(bottom=0.25)  # Reduce the bottom space
-
+    
     plt.show()
     plt.close()
 

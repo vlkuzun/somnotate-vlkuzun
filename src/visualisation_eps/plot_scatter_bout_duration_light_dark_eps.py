@@ -66,7 +66,14 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
 
     # Create the plot with broken axis
     fig = plt.figure(figsize=(16, 12))
-    bax = brokenaxes(ylims=((0, 8400), (14000, pooled_data['boutDuration'].max()+100)), hspace=0.05, fig=fig)
+    
+    # Adjust the figure margins before creating the brokenaxes
+    # This shifts the entire plotting area including all axes
+    plt.subplots_adjust(bottom=0.25)
+    
+    # Create the brokenaxes plot on the pre-adjusted figure
+    bax = brokenaxes(ylims=((0, 8400), (14000, pooled_data['boutDuration'].max()+100)), 
+                    hspace=0.1, fig=fig)
 
     # Define unique x-tick positions for light and dark phases for each subject
     subjects = ['somnotate', 'fp', 'bh', 'vu']
@@ -112,21 +119,6 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
 
     bax.tick_params(axis='y', labelsize=32)
     
-    # Increased font size for tick labels on the broken part
-    # Fix the attribute error by safely accessing the attributes
-    try:
-        # Try the newer API
-        for ax in bax.d.values():
-            ax.tick_params(axis='y', labelsize=32)
-    except AttributeError:
-        # Try the older API or alternative attribute names
-        try:
-            for ax in bax.diag_handles:
-                ax.tick_params(axis='y', labelsize=32)
-        except AttributeError:
-            # If both fail, just continue without modifying the diagonal axes
-            print("Warning: Could not access diagonal axes to change font size.")
-    
     # Remove title
     # fig.suptitle('Bout Duration Comparison across Light and Dark Phases', fontsize=26)
     
@@ -135,15 +127,14 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
 
-    # Save the combined plot with higher DPI
-    combined_plot_filename = f"{output_folder}/all_subjects_combined_bout_durations_light_and_dark.eps"
-    plt.savefig(combined_plot_filename, bbox_inches='tight')
-
-    # Shift entire graph up by adjusting the bottom margin
-    plt.subplots_adjust(bottom=0.25)  # Reduce the bottom space
-
+    # Save only in EPS format for high-quality vector graphics
+    eps_filename = f"{output_folder}/all_subjects_combined_bout_durations_light_and_dark_updated.eps"
+    plt.savefig(eps_filename, format='eps', bbox_inches='tight')
+    
     plt.show()
     plt.close()
+
+    print(f"Plot saved in EPS format at: {eps_filename}")
 
     # Perform a t-test to check for statistical differences between Light and Dark phases
     light_data = pooled_data[pooled_data['timePeriod'] == 'Light']['boutDuration']
