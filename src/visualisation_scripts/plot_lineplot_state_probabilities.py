@@ -1,4 +1,3 @@
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -151,8 +150,11 @@ def plot_awake_and_non_rem(awake_data, non_rem_data, start_idx, end_idx, save_pa
     plt.tight_layout()
     
     if save_path:
-        plt.savefig(save_path, dpi=600, bbox_inches='tight')
-        print(f"Figure saved to {save_path} with 600 DPI")
+        # Save as PNG
+        plt.savefig(f"{save_path}.png", dpi=600, bbox_inches='tight')
+        # Save as EPS
+        plt.savefig(f"{save_path}.eps", format='eps', bbox_inches='tight')
+        print(f"Figure saved to {save_path}.png with 600 DPI and as {save_path}.eps")
     
     plt.show()
 
@@ -161,9 +163,9 @@ def plot_awake_and_non_rem(awake_data, non_rem_data, start_idx, end_idx, save_pa
 
 
 # Example usage
-# Generate a filename based on the indices
-filename = f"somnotate_annotation_shaded_likelihood_sub-010_{4975}_{5000}.png"
-save_path = f"/Volumes/harris/volkan/somnotate/plots/likelihood_scoring/{filename}"  # Adjust the path as needed
+# Generate a filename based on the indices without extension
+filename = f"somnotate_annotation_shaded_likelihood_sub-010_{4975}_{5000}"
+save_path = f"/Volumes/harris/volkan/somnotate-vlkuzun/plots/likelihood_scoring/{filename}"  # Adjust the path as needed
 
 shaded_indices = plot_awake_and_non_rem(awake_data, non_rem_data, start_idx=4975, end_idx=5000, save_path=save_path)
 
