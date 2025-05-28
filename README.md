@@ -29,6 +29,6 @@ This will ensure all packages are first installed if available on conda environm
 
 ## Running of analysis
 
-1. Once the relevant packages have been installed refer to somnotate_pipeline for conducting initial somnotate analysis on acquired data for automated scoring of vigilance state
+1. Once the relevant packages have been installed refer to somnotate_pipeline within src for conducting initial somnotate analysis on acquired data for automated scoring of vigilance state
 
 2. Refer to initial Harris lab somnotate analysis algorithm designed https://github.com/Sfrap99/Somnotate
