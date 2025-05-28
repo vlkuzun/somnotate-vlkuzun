@@ -326,16 +326,11 @@ def plot_bout_duration_histograms_with_significance(bout_durations_dict, sleep_s
     y_max = max(means) + max(ses)  # Max y value for positioning brackets
     
     # Plot bars with error bars (means and standard errors)
-    plt.bar(x, means, yerr=ses, capsize=5, color=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728'], alpha=0.7, error_kw={'elinewidth': 3})  # Set thicker error bars
+    plt.bar(x, means, yerr=ses, capsize=5, color=['#1f77b4', '#333333', '#777777', '#AAAAAA'], alpha=0.7, error_kw={'elinewidth': 3})  # Set thicker error bars
     plt.xticks(x, labels)
     plt.tick_params(axis='x', labelsize = 24)
     plt.tick_params(axis='y', labelsize=24)
     plt.ylabel('Bout Duration (seconds)', fontsize=24)
-    
-    if sleep_stage_label:
-        plt.title(f'Bout Duration Comparison Across {sleep_stage_label}', fontsize=26)
-    else:
-        plt.title('Overall Bout Durations Across DataFrames')
     
     plt.ylim(0, y_max + 0.2 * y_max)  # Adjust y-limits
 
@@ -370,9 +365,16 @@ def plot_bout_duration_histograms_with_significance(bout_durations_dict, sleep_s
     # Adjust spacing to fit the title and plot comfortably
     plt.tight_layout(rect=[0, 0, 1, 0.95])  # Adjust to prevent overlap with title
     
-    # Save the figure with high resolution (600 DPI) instead of displaying it
-    filename = f"/Volumes/harris/volkan/somnotate/plots/bout_duration/barplot_bout_duration/barplot_bout_duration_{sleep_stage_label.replace(' ', '_')}.png"
-    plt.savefig(filename, dpi=600, bbox_inches='tight')
+    # Save the figure in both PNG and EPS formats
+    base_filename = f"/Volumes/harris/volkan/somnotate-vlkuzun/plots/bout_duration/barplot_bout_duration/barplot_bout_duration_{sleep_stage_label.replace(' ', '_')}"
+    
+    # Save as PNG with 600 DPI for presentations and quick viewing
+    plt.savefig(f"{base_filename}.png", dpi=600, bbox_inches='tight')
+    
+    # Save as EPS for publication quality (vector format)
+    plt.savefig(f"{base_filename}.eps", format='eps', bbox_inches='tight')
+    
+    plt.show()
     plt.close()
 
 def plot_bout_duration_barplot_stripplot_with_significance(bout_durations_dict, sleep_stage_label):
@@ -792,7 +794,6 @@ def plot_transitions(n_transitions_all):
     plt.show()
 
 
-        
 
 
 
@@ -808,14 +809,6 @@ def plot_transitions(n_transitions_all):
 
 
 
-        
-
-
-    
-
-
-    
-    
 
 
 
@@ -825,7 +818,16 @@ def plot_transitions(n_transitions_all):
 
 
 
-    
+
+
+
+
+
+
+
+
+
+
 
 
 

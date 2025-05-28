@@ -61,8 +61,19 @@ def main(paths, save_path=None, dpi=600):
     plt.tight_layout()
     
     if save_path:
-        plt.savefig(save_path, dpi=dpi, bbox_inches='tight')
-        print(f"Figure saved to {save_path} with DPI={dpi}")
+        # Extract base path without extension
+        base_save_path = save_path.rsplit('.', 1)[0] if '.' in save_path else save_path
+        
+        # Save as EPS format
+        eps_path = f"{base_save_path}.eps"
+        plt.savefig(eps_path, dpi=dpi, bbox_inches='tight', format='eps')
+        
+        # Save as PNG format
+        png_path = f"{base_save_path}.png"
+        plt.savefig(png_path, dpi=dpi, bbox_inches='tight', format='png')
+        
+        print(f"Figure saved as EPS: {eps_path}")
+        print(f"Figure saved as PNG: {png_path}")
     else:
         plt.show()
 
@@ -82,7 +93,8 @@ if __name__ == "__main__":
         dpi_input = input("Enter DPI (default is 600): ").strip()
         
         dpi = 600 if not dpi_input else int(dpi_input)
-        save_path = f"{save_path}.eps"
+        
+        # No extension added here as we'll add them in the main function
         
         # Ensure the directory exists
         os.makedirs(os.path.dirname(save_path), exist_ok=True)

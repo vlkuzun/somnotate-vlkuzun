@@ -111,6 +111,7 @@ for i, ax in enumerate(axes):
     ax.set_position([0.125, ax.get_position().y0, 0.775, ax.get_position().height])
 
 # Save figure with high resolution (600 DPI)
-plt.savefig('/Volumes/harris/volkan/somnotate/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.png', dpi=600, bbox_inches='tight')
+plt.savefig('/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.png', dpi=600, bbox_inches='tight')
+plt.savefig('/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.eps', format='eps', bbox_inches='tight')
 
 plt.show()

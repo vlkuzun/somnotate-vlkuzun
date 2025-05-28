@@ -6,7 +6,7 @@ import numpy as np
 from brokenaxes import brokenaxes
 from scipy import stats
 
-def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
+def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder, output_folder_eps):
     """
     Analyze bout durations from EEG data downsampled to 1Hz and create a combined plot with Light and Dark phases pooled for all files.
 
@@ -142,6 +142,10 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
     # Save the combined plot with higher DPI
     combined_plot_filename = f"{output_folder}/all_subjects_combined_bout_durations_light_and_dark_updated.png"
     plt.savefig(combined_plot_filename, bbox_inches='tight', dpi=600)
+
+    # Save in EPS format for high-quality vector graphics
+    eps_filename = f"{output_folder_eps}/all_subjects_combined_bout_durations_light_and_dark_updated.eps"
+    plt.savefig(eps_filename, format='eps', bbox_inches='tight')
     
     plt.show()
     plt.close()
@@ -172,5 +176,6 @@ analyze_bout_durations_light_dark_phase(
         "/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/sub-010_ses-01_recording-01_data-sleepscore_vu_timestamped_sr-1hz.csv": "vu"
     },
 
-    output_folder="/Volumes/harris/volkan/somnotate-vlkuzun/plots/bout_duration/light_dark_bout_duration"
+    output_folder="/Volumes/harris/volkan/somnotate-vlkuzun/plots/bout_duration/light_dark_bout_duration",
+    output_folder_eps="/Volumes/harris/volkan/somnotate-vlkuzun/plots/bout_duration/light_dark_bout_duration/eps"
 )
