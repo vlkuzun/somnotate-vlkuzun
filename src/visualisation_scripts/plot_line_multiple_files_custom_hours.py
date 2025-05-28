@@ -199,13 +199,17 @@ def plot_sleep_stages(files, subjects, fontsize=24):
     # This creates more space at the top for the legend
     plt.subplots_adjust(top=0.65, bottom=0.25, left=0.1, right=0.95)
 
-    plt.savefig('/Volumes/harris/volkan/somnotate/plots/stage_across_ZT/somnotate_vs_manual_sub-010_fp_stage_across_ZT_70hr.png', dpi=600)
+    # Save figure in both PNG and EPS formats
+    output_path = '/Volumes/harris/volkan/somnotate-vlkuzun/plots/stage_across_ZT/somnotate_vs_manual_sub-010_fp_stage_across_ZT_70hr'
+    plt.savefig(f"{output_path}.png", dpi=600)
+    plt.savefig(f"{output_path}.eps", format='eps')
+    print(f"Figure saved as {output_path}.png with 600 DPI and as {output_path}.eps")
 
     # Show the plot
     plt.show()
 
 # Example usage
-plot_sleep_stages(['/Volumes/harris/volkan/sleep_profile/downsample_auto_score/sub-010_ses-01_recording-01_time-0-69h_1Hz_1hrbins.csv', 
-                  '/Volumes/harris/volkan/sleep_profile/downsample_manual_score/sub-010_ses-01_recording-01_time-0-69h_manual_sr-1hz_1hrbins_ZT.csv'], 
+plot_sleep_stages(['/Volumes/harris/volkan/sleep-profile/downsample_auto_score/sub-010_ses-01_recording-01_time-0-69h_1Hz_1hrbins.csv', 
+                  '/Volumes/harris/volkan/sleep-profile/downsample_manual_score/sub-010_ses-01_recording-01_time-0-69h_manual_sr-1hz_1hrbins_ZT.csv'], 
                  ['Somnotate', 'Manual'],
                  fontsize=24)
