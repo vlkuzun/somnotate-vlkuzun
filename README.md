@@ -8,7 +8,7 @@ Based upon https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcb
 
 Ensure conda-forge is natively the channel for install conda environments by setting up environment with 
 
-`conda create -n myenv python=3.10
+`conda create -n myenv python=3.10\n
 conda activate myenv
 conda config --add channels conda-forge
 conda config --set channel_priority strict`
