@@ -102,20 +102,34 @@ def create_grouped_bar_chart(file_paths, output_file):
 
     plt.tight_layout()
 
-    # Save plot
-    plt.savefig(output_file, dpi=600, bbox_inches='tight')
+    # Save plot in both PNG and EPS formats
+    if output_file:
+        # Extract base path without extension
+        base_output = output_file.split('.')[0] if '.' in output_file else output_file
+        
+        # Save as PNG
+        png_path = f"{base_output}.png"
+        plt.savefig(png_path, dpi=600, bbox_inches='tight')
+        print(f"Figure saved as PNG: {png_path}")
+        
+        # Save as EPS (vector format for publication)
+        eps_path = f"{base_output}.eps"
+        plt.savefig(eps_path, format='eps', bbox_inches='tight')
+        print(f"Figure saved as EPS: {eps_path}")
+    
+    # Display the plot
     plt.show()
     plt.close()
 
 # Main function
 def main():
     file_paths = [
-        '/Volumes/harris/volkan/sleep_profile/francesca_sub-010/automated_state_annotationoutput_sub-010_ses-01_recording-01_sr-1hz.csv',
-        '/Volumes/harris/volkan/sleep_profile/francesca_sub-010/sub-010_ses-01_recording-01_data-sleepscore_fp_sr-1hz.csv',
-        '/Volumes/harris/volkan/sleep_profile/francesca_sub-010/sub-010_ses-01_recording-01_data-sleepscore_vu_sr-1hz.csv',
-        '/Volumes/harris/volkan/sleep_profile/francesca_sub-010/sub-010_ses-01_recording-01_export(HBH)_sr-1hz.csv'
+        '/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/automated_state_annotationoutput_sub-010_ses-01_recording-01_timestamped_sr-1hz.csv',
+        '/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/sub-010_ses-01_recording-01_data-sleepscore_fp_timestamped_sr-1hz.csv',
+        '/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/sub-010_ses-01_recording-01_data-sleepscore_vu_timestamped_sr-1hz.csv',
+        '/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/sub-010_ses-01_recording-01_export(HBH)_timestamped_sr-1hz.csv'
     ]
-    output_file = '/Volumes/harris/volkan/somnotate/plots/bout_duration/microbouts/micro_bout_bar_charts_one_plot.png'
+    output_file = '/Volumes/harris/volkan/somnotate-vlkuzun/plots/bout_duration/microbouts/micro_bout_bar_charts_one_plot'
     create_grouped_bar_chart(file_paths, output_file)
     print(f"Grouped bar chart saved to {output_file}")
 
