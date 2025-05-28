@@ -20,3 +20,9 @@ Move into working directory of repo and install required packages via
 conda env update --file environment.yml```
 
 This will ensure all packages are first installed if available on conda environment otherwise installed via pip.
+
+## Running of analysis
+
+1. Once the relevant packages have been installed refer to somnotate_pipeline for conducting initial somnotate analysis on acquired data for automated scoring of vigilance state
+
+2. Refer to initial Harris lab somnotate analysis algorithm designed https://github.com/Sfrap99/Somnotate
