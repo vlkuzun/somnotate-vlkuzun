@@ -12,15 +12,18 @@ Ensure conda-forge is natively the channel for install conda environments by set
 conda create -n myenv python=3.10
 conda activate myenv
 conda config --add channels conda-forge
-conda config --set channel_priority strict```
+conda config --set channel_priority strict
+```
 
 
 ## Installation of required packages
 
 Move into working directory of repo and install required packages via
 
-```conda activate myenv
-conda env update --file environment.yml```
+```bash
+conda activate myenv
+conda env update --file environment.yml
+```
 
 This will ensure all packages are first installed if available on conda environment otherwise installed via pip.
 
