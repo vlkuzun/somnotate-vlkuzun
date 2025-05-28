@@ -94,7 +94,12 @@ def plot_single_eeg(ax, eeg_data, sleep_stages, label, time_window_start, shade_
         plt.Line2D([0], [0], color=colors[2], lw=2, label='NREM'),
         #plt.Line2D([0], [0], color=colors[3], lw=2, label='REM'),
     ]
-    ax.legend(handles=handles, loc='upper right', fontsize=18)  # Increased from 14
+    # Move legend higher by adjusting bbox_to_anchor value
+    ax.legend(handles=handles, loc='upper right', fontsize=18, bbox_to_anchor=(1.0, 1.25))
+    
+    # Remove top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
 
 # Create subplots for visualization
@@ -116,7 +121,16 @@ plot_single_eeg(
 # Customize the plot
 ax.set_xlabel('Time (seconds)', fontsize=22)
 
+# Set x-axis limits to match the data range exactly and extend to the y-axis
+ax.set_xlim(start_time, end_time)
+# Adjust the plot layout to eliminate padding between axis and figure edge
+plt.subplots_adjust(left=0.05, right=0.95)
+
 # Display the plot
 plt.tight_layout()
-plt.savefig('/Volumes/harris/volkan/somnotate/plots/likelihood_scoring/awake_nrem_likelihood_eeg_snippet_shading_sub-010.png', dpi=600, bbox_inches='tight')
+# Save as PNG and EPS
+output_path = '/Volumes/harris/volkan/somnotate-vlkuzun`/plots/likelihood_scoring/awake_nrem_likelihood_eeg_snippet_shading_sub-010'
+plt.savefig(f"{output_path}.png", dpi=600, bbox_inches='tight')
+plt.savefig(f"{output_path}.eps", format='eps', bbox_inches='tight')
+print(f"Figure saved as {output_path}.png with 600 DPI and as {output_path}.eps")
 plt.show()
