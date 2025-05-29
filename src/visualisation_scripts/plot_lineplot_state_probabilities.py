@@ -1,7 +1,23 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
+
+# Set global style for publication
+plt.rcParams.update({
+    'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
+    'font.size': 10,                # General font size
+    'axes.labelsize': 12,           # Axis label size
+    'axes.titlesize': 12,           # Title size
+    'xtick.labelsize': 10,          # X tick label size
+    'ytick.labelsize': 10,          # Y tick label size
+    'legend.fontsize': 10,          # Legend text size
+    'figure.dpi': 300,              # High-res output
+    'savefig.dpi': 600,             # High-res when saving
+    'figure.figsize': [4, 3],       # Width x Height in inches
+    'axes.linewidth': 1,            # Thinner axis borders
+    'pdf.fonttype': 42,             # Embed fonts properly in PDFs
+    'ps.fonttype': 42
+})
 
 ## Extract state probabilities
 
@@ -123,38 +139,51 @@ def plot_awake_and_non_rem(awake_data, non_rem_data, start_idx, end_idx, save_pa
     if in_shaded_region:
         shaded_indices.append((start_idx + region_start, end_idx))
 
-    # Plot the data
-    plt.figure(figsize=(12, 6))
-    plt.plot(x, awake_values, label='Wake', color='red', linewidth=2)
-    plt.plot(x, non_rem_values, label='NREM', color='blue', linewidth=2)
+    # Plot the data - use figsize from rcParams
+    plt.figure()
+    plt.plot(x, awake_values, label='Wake', color='#E69F00', linewidth=1)
+    plt.plot(x, non_rem_values, label='NREM', color='#56B4E9', linewidth=1)
 
     # Shade the regions that satisfy the condition
     for region in shaded_indices:
         plt.axvspan(region[0], region[1], color='gray', alpha=0.3)
 
-    # Customize the plot
-    # Removed title as requested
-    plt.xlabel('Time (seconds)', fontsize=24)
-    plt.ylabel('Likelihood', fontsize=24)
-    plt.xticks(fontsize=22)
-    plt.yticks([0, 0.25, 0.5, 0.75, 1], fontsize=22)
-    plt.legend(fontsize=22)
+    # Customize the plot - use font sizes from rcParams
+    plt.xlabel('Time (seconds)')
+    plt.ylabel('Likelihood')
+    plt.yticks([0, 0.25, 0.5, 0.75, 1])
+    
+    # Move legend to the center left of the plot
+    plt.legend(loc='center left', bbox_to_anchor=(0.0, 0.5))
+    
     plt.grid(alpha=0.3)
-
-    # Remove top and right spines
+    
+    # Ensure first x-tick is against the y-axis
     ax = plt.gca()
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
+    
+    # Set x-ticks to start at the first data point (aligned with y-axis)
+    xticks = list(range(start_idx, end_idx + 1, (end_idx - start_idx) // 5))
+    if start_idx not in xticks:
+        xticks = [start_idx] + xticks
+    plt.xticks(xticks)
+    
+    # Set axis limits
+    plt.xlim(start_idx, end_idx)
+    # Set y-axis to end at highest y-tick (1.0) with small padding (2%)
+    # to prevent data trimming at the top
+    plt.ylim(-0.01, 1.01)
 
     # Display the plot and/or save with high resolution
     plt.tight_layout()
     
     if save_path:
         # Save as PNG
-        plt.savefig(f"{save_path}.png", dpi=600, bbox_inches='tight')
-        # Save as EPS
-        plt.savefig(f"{save_path}.eps", format='eps', bbox_inches='tight')
-        print(f"Figure saved to {save_path}.png with 600 DPI and as {save_path}.eps")
+        plt.savefig(f"{save_path}.png", bbox_inches='tight')
+        # Save as PDF
+        plt.savefig(f"{save_path}.pdf", format='pdf', bbox_inches='tight')
+        print(f"Figure saved to {save_path}.png and {save_path}.pdf")
     
     plt.show()
 
