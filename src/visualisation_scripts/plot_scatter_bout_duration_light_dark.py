@@ -6,7 +6,24 @@ import numpy as np
 from brokenaxes import brokenaxes
 from scipy import stats
 
-def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder, output_folder_eps):
+# Set global style for publication
+plt.rcParams.update({
+    'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
+    'font.size': 10,                # General font size
+    'axes.labelsize': 12,           # Axis label size
+    'axes.titlesize': 12,           # Title size
+    'xtick.labelsize': 10,          # X tick label size
+    'ytick.labelsize': 10,          # Y tick label size
+    'legend.fontsize': 10,          # Legend text size
+    'figure.dpi': 300,              # High-res output
+    'savefig.dpi': 600,             # High-res when saving
+    'figure.figsize': [8, 6],       # Width x Height in inches - standard publication size
+    'axes.linewidth': 1,            # Thinner axis borders
+    'pdf.fonttype': 42,             # Embed fonts properly in PDFs
+    'ps.fonttype': 42
+})
+
+def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
     """
     Analyze bout durations from EEG data downsampled to 1Hz and create a combined plot with Light and Dark phases pooled for all files.
 
@@ -64,11 +81,10 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder, ou
     # Combine all data into a single DataFrame
     pooled_data = pd.concat(pooled_data, ignore_index=True)
 
-    # Create the plot with broken axis
-    fig = plt.figure(figsize=(16, 12))
+    # Create the plot with broken axis - using rcParams for figure size
+    fig = plt.figure()
     
     # Adjust the figure margins before creating the brokenaxes
-    # This shifts the entire plotting area including all axes
     plt.subplots_adjust(bottom=0.25)
     
     # Create the brokenaxes plot on the pre-adjusted figure
@@ -118,7 +134,7 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder, ou
             bax.scatter(
                 np.random.normal(loc=plot_index, scale=0.15, size=len(subset)), # Jittered x-axis positions
                 subset['boutDuration'], # Y-axis: bout duration
-                alpha=0.6, s=40, label=f"{subject} ({period})" if period == 'Light' else None,
+                alpha=0.6, s=10, label=f"{subject} ({period})" if period == 'Light' else None,
                 color=color_map[(subject, period)]
             )
 
@@ -129,28 +145,28 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder, ou
 
     # Set x-ticks and labels AFTER all plotting is complete
     bax.set_xticks(xticks)
-    bax.set_xticklabels(['', 'somnotate (Light)', 'fp (Light)', 'bh (Light)', 'vu (Light)', 'somnotate (Dark)', 'fp (Dark)', 'bh (Dark)', 'vu (Dark)'], rotation=45, ha='right', fontsize=32)
-    bax.set_ylabel('Bout Duration (seconds)', fontsize=32, labelpad=100)
+    bax.set_xticklabels(['', 'somnotate (Light)', 'fp (Light)', 'bh (Light)', 'vu (Light)', 
+                          'somnotate (Dark)', 'fp (Dark)', 'bh (Dark)', 'vu (Dark)'], 
+                       rotation=45, ha='right')
+    bax.set_ylabel('Bout Duration (seconds)', labelpad=35)
 
-    bax.tick_params(axis='y', labelsize=32)
-    
     # Remove top and right spines for cleaner plot
     for ax in bax.axs:
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
 
-    # Save the combined plot with higher DPI
+    # Save the combined plot as PNG and PDF
     combined_plot_filename = f"{output_folder}/all_subjects_combined_bout_durations_light_and_dark_updated.png"
-    plt.savefig(combined_plot_filename, bbox_inches='tight', dpi=600)
+    plt.savefig(combined_plot_filename, bbox_inches='tight')
 
-    # Save in EPS format for high-quality vector graphics
-    eps_filename = f"{output_folder_eps}/all_subjects_combined_bout_durations_light_and_dark_updated.eps"
-    plt.savefig(eps_filename, format='eps', bbox_inches='tight')
+    # Save as PDF format for high-quality vector graphics
+    pdf_filename = f"{output_folder}/all_subjects_combined_bout_durations_light_and_dark_updated.pdf"
+    plt.savefig(pdf_filename, format='pdf', bbox_inches='tight')
     
     plt.show()
     plt.close()
 
-    print("Plot with broken axis saved successfully at 600 DPI.")
+    print("Plot saved successfully as PNG and PDF.")
 
     # Perform a t-test to check for statistical differences between Light and Dark phases
     light_data = pooled_data[pooled_data['timePeriod'] == 'Light']['boutDuration']
@@ -175,7 +191,5 @@ analyze_bout_durations_light_dark_phase(
         "/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/sub-010_ses-01_recording-01_export(HBH)_timestamped_sr-1hz.csv": 'bh',
         "/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/sub-010_ses-01_recording-01_data-sleepscore_vu_timestamped_sr-1hz.csv": "vu"
     },
-
-    output_folder="/Volumes/harris/volkan/somnotate-vlkuzun/plots/bout_duration/light_dark_bout_duration",
-    output_folder_eps="/Volumes/harris/volkan/somnotate-vlkuzun/plots/bout_duration/light_dark_bout_duration/eps"
+    output_folder="/Volumes/harris/volkan/somnotate-vlkuzun/plots/bout_duration/light_dark_bout_duration"
 )
