@@ -1,17 +1,30 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
-# Set the Seaborn theme
-#sns.set_theme(style="whitegrid")
+# Set global style for publication
+plt.rcParams.update({
+    'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
+    'font.size': 10,                # General font size
+    'axes.labelsize': 12,           # Axis label size
+    'axes.titlesize': 12,           # Title size
+    'xtick.labelsize': 10,          # X tick label size
+    'ytick.labelsize': 10,          # Y tick label size
+    'legend.fontsize': 10,          # Legend text size
+    'figure.dpi': 300,              # High-res output
+    'savefig.dpi': 600,             # High-res when saving
+    'figure.figsize': [4, 3],       # Width x Height in inches
+    'axes.linewidth': 1,            # Thinner axis borders
+    'pdf.fonttype': 42,             # Embed fonts properly in PDFs
+    'ps.fonttype': 42
+})
 
 def create_pie_chart(df, output_dir, filename, title):
     # Count the occurrences of each sleep stage
     stage_counts = df['sleepStage'].value_counts()
 
     # Define the labels and sizes for the pie chart
-    labels = ['Wake', 'NREM', 'REM']  # Changed 'Awake' to 'Wake'
+    labels = ['Wake', 'NREM', 'REM']
     sizes = [stage_counts.get(1, 0), stage_counts.get(2, 0), stage_counts.get(3, 0)]
     
     # Calculate the exact percentages
@@ -30,35 +43,36 @@ def create_pie_chart(df, output_dir, filename, title):
     # Create percentage labels for each segment
     autopct_labels = [f"{p}%" for p in percentages]
     
-    # Plot the pie chart
-    plt.figure(figsize=(8, 6))  # Increased figure size
-    plt.rcParams.update({'font.size': 20})  # Set base font size for all elements
+    # Plot the pie chart - use rcParams for figure size
+    plt.figure()
     
-    # Use manual labels instead of a custom autopct function
+    # Define consistent colors for sleep stages
+    colors = {
+        'Wake': '#FFFDD0',  # Cream color for Wake
+        'NREM': '#ADD8E6',  # Light blue for NREM
+        'REM': '#90EE90'    # Light green for REM
+    }
+    
+    # Use manual labels with font sizes from rcParams
     plt.pie(sizes, labels=labels, autopct=lambda pct, allvals=sizes, idx=[0,1,2]: autopct_labels[idx.pop(0)],
-            startangle=140, textprops={'fontsize': 22},
-            colors=['#ff9999','#66b3ff','#99ff99'], wedgeprops={'edgecolor': 'black', 'linewidth': 1.5})
+            startangle=140,
+            colors=[colors['Wake'], colors['NREM'], colors['REM']], 
+            wedgeprops={'edgecolor': 'black', 'linewidth': 1})
     
-    # Increase percentage value font size
-    for text in plt.gca().texts:
-        text.set_fontsize(20)  # Increased percentage font size
-        
-    plt.title(title, fontsize=26, pad=20)  # Increased title font size and added padding
+    plt.title(title)
 
-    # Generate output paths for PNG and EPS formats
+    # Generate output paths for PNG and PDF formats
     base_filename = f"{filename}_sleep_stage_pie_chart"
     png_output_path = os.path.join(output_dir, f"{base_filename}.png")
-    eps_output_path = os.path.join(output_dir, f"{base_filename}.eps")
+    pdf_output_path = os.path.join(output_dir, f"{base_filename}.pdf")
     
-    # Save the pie chart as PNG with high DPI
-    plt.savefig(png_output_path, dpi=600, bbox_inches='tight')
-    
-    # Save the pie chart as EPS (vector format for publication)
-    plt.savefig(eps_output_path, format='eps', bbox_inches='tight')
+    # Save the pie chart using rcParams DPI settings
+    plt.savefig(png_output_path, bbox_inches='tight')
+    plt.savefig(pdf_output_path, format='pdf', bbox_inches='tight')
     
     plt.close()
     print(f"Pie chart saved as PNG: {png_output_path}")
-    print(f"Pie chart saved as EPS: {eps_output_path}")
+    print(f"Pie chart saved as PDF: {pdf_output_path}")
 
 def main():
     print("Welcome to the Sleep Stage Pie Chart Generator!")
