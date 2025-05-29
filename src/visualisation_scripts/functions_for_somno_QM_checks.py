@@ -308,7 +308,24 @@ def remove_outliers(data):
     return filtered_data
 
 def plot_bout_duration_histograms_with_significance(bout_durations_dict, sleep_stage_label):
-    plt.figure(figsize=(12, 6))
+    # Set global style for publication
+    plt.rcParams.update({
+        'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
+        'font.size': 10,                # General font size
+        'axes.labelsize': 12,           # Axis label size
+        'axes.titlesize': 12,           # Title size
+        'xtick.labelsize': 10,          # X tick label size
+        'ytick.labelsize': 10,          # Y tick label size
+        'legend.fontsize': 10,          # Legend text size
+        'figure.dpi': 300,              # High-res output
+        'savefig.dpi': 600,             # High-res when saving
+        'figure.figsize': [4, 3],       # Width x Height in inches
+        'axes.linewidth': 1,            # Thinner axis borders
+        'pdf.fonttype': 42,             # Embed fonts properly in PDFs
+        'ps.fonttype': 42
+    })
+    
+    plt.figure()
     labels = list(bout_durations_dict.keys())
     
     # Calculate means and standard errors
@@ -326,11 +343,9 @@ def plot_bout_duration_histograms_with_significance(bout_durations_dict, sleep_s
     y_max = max(means) + max(ses)  # Max y value for positioning brackets
     
     # Plot bars with error bars (means and standard errors)
-    plt.bar(x, means, yerr=ses, capsize=5, color=['#1f77b4', '#333333', '#777777', '#AAAAAA'], alpha=0.7, error_kw={'elinewidth': 3})  # Set thicker error bars
+    plt.bar(x, means, yerr=ses, capsize=5, color=['#1f77b4', '#333333', '#777777', '#AAAAAA'], alpha=0.7)
     plt.xticks(x, labels)
-    plt.tick_params(axis='x', labelsize = 24)
-    plt.tick_params(axis='y', labelsize=24)
-    plt.ylabel('Bout Duration (seconds)', fontsize=24)
+    plt.ylabel('Bout Duration (seconds)')
     
     plt.ylim(0, y_max + 0.2 * y_max)  # Adjust y-limits
 
@@ -363,16 +378,16 @@ def plot_bout_duration_histograms_with_significance(bout_durations_dict, sleep_s
     ax.spines['right'].set_visible(False)
 
     # Adjust spacing to fit the title and plot comfortably
-    plt.tight_layout(rect=[0, 0, 1, 0.95])  # Adjust to prevent overlap with title
+    plt.tight_layout()
     
-    # Save the figure in both PNG and EPS formats
+    # Save the figure in both PNG and PDF formats
     base_filename = f"/Volumes/harris/volkan/somnotate-vlkuzun/plots/bout_duration/barplot_bout_duration/barplot_bout_duration_{sleep_stage_label.replace(' ', '_')}"
     
-    # Save as PNG with 600 DPI for presentations and quick viewing
-    plt.savefig(f"{base_filename}.png", dpi=600, bbox_inches='tight')
+    # Save as PNG
+    plt.savefig(f"{base_filename}.png", bbox_inches='tight')
     
-    # Save as EPS for publication quality (vector format)
-    plt.savefig(f"{base_filename}.eps", format='eps', bbox_inches='tight')
+    # Save as PDF for publication quality
+    plt.savefig(f"{base_filename}.pdf", format='pdf', bbox_inches='tight')
     
     plt.show()
     plt.close()
@@ -519,7 +534,7 @@ def plot_bout_duration_barplot_stripplot_with_significance_all_data(bout_duratio
         comparisons = tukey._results_table.data[1:]  # Extract results from Tukey's test
         significance_threshold = 0.05  # Significance level for stars
 
-        # Annotate significance stars on pairwise comparisonsß
+        # Annotate significance stars on pairwise comparisons
         for comparison in comparisons:
             group1, group2, meandiff, p_adj, lower, upper, reject = comparison
             if p_adj < significance_threshold:  # Only annotate significant differences
