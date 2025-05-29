@@ -15,24 +15,30 @@ import os
 import functions_for_somno_QM_checks as QMfunctions
 
 
-def main(paths, save_path=None, dpi=600):
+def main(paths, save_path=None):
     '''
     Compare the overall similarity of sleep stage annotations between different files.
     Input:
     - paths: dictionary, where the keys are the paths to the CSV files and the values are the labels for the files.
     - save_path: optional str, path to save the figure. If None, the figure is displayed instead.
-    - dpi: int, resolution for saved figure (default 600)
     Output:
     - Displays or saves a heatmap showing the similarity matrix of sleep stage annotations.
     '''
-    # Increase default font sizes
+    # Set global style for publication
     plt.rcParams.update({
-        'font.size': 16,
-        'axes.labelsize': 18,
-        'axes.titlesize': 22,
-        'xtick.labelsize': 16,
-        'ytick.labelsize': 16,
-        'legend.fontsize': 16,
+        'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
+        'font.size': 10,                # General font size
+        'axes.labelsize': 12,           # Axis label size
+        'axes.titlesize': 12,           # Title size
+        'xtick.labelsize': 10,          # X tick label size
+        'ytick.labelsize': 10,          # Y tick label size
+        'legend.fontsize': 10,          # Legend text size
+        'figure.dpi': 300,              # High-res output
+        'savefig.dpi': 600,             # High-res when saving
+        'figure.figsize': [4, 3],       # Width x Height in inches
+        'axes.linewidth': 1,            # Thinner axis borders
+        'pdf.fonttype': 42,             # Embed fonts properly in PDFs
+        'ps.fonttype': 42
     })
     
     dataframes = {QMfunctions.rename_file(path): pd.read_csv(path) for path in paths}
@@ -48,15 +54,15 @@ def main(paths, save_path=None, dpi=600):
             matrix[i, j] = similarity  
 
     # Create the heatmap
-    plt.figure(figsize=(10, 8))  # Slightly larger figure
+    plt.figure(figsize=(6, 5))  # Adjusted for publication style
     sns.heatmap(matrix, annot=True, fmt=".2f", cmap="Blues", xticklabels=labels, yticklabels=labels, 
-                cbar=True, annot_kws={"size": 18})  # Increased annotation size
-    plt.tick_params(axis='x', labelsize=18, rotation=45)  # Increased tick label size and rotated for better readability
-    plt.tick_params(axis='y', labelsize=18)
+                cbar=True, annot_kws={"size": 10})  # Adjusted annotation size
+    plt.tick_params(axis='x', rotation=45)  # Adjusted tick label size and rotated for better readability
+    plt.tick_params(axis='y')
 
     # Customize the color bar font size
     colorbar = plt.gca().collections[0].colorbar
-    colorbar.ax.tick_params(labelsize=16)  # Increased colorbar tick size
+    colorbar.ax.tick_params(labelsize=10)  # Adjusted colorbar tick size
     
     plt.tight_layout()
     
@@ -64,15 +70,15 @@ def main(paths, save_path=None, dpi=600):
         # Extract base path without extension
         base_save_path = save_path.rsplit('.', 1)[0] if '.' in save_path else save_path
         
-        # Save as EPS format
-        eps_path = f"{base_save_path}.eps"
-        plt.savefig(eps_path, dpi=dpi, bbox_inches='tight', format='eps')
-        
         # Save as PNG format
         png_path = f"{base_save_path}.png"
-        plt.savefig(png_path, dpi=dpi, bbox_inches='tight', format='png')
+        plt.savefig(png_path, bbox_inches='tight')
         
-        print(f"Figure saved as EPS: {eps_path}")
+        # Save as PDF format instead of EPS for better font handling
+        pdf_path = f"{base_save_path}.pdf"
+        plt.savefig(pdf_path, format='pdf', bbox_inches='tight')
+        
+        print(f"Figure saved as PDF: {pdf_path}")
         print(f"Figure saved as PNG: {png_path}")
     else:
         plt.show()
@@ -90,16 +96,11 @@ if __name__ == "__main__":
     save_option = input("Do you want to save the figure? (yes/no): ").strip().lower()
     if save_option == 'yes':
         save_path = input("Enter complete path to save the figure (with filename, without extension): ").strip()
-        dpi_input = input("Enter DPI (default is 600): ").strip()
-        
-        dpi = 600 if not dpi_input else int(dpi_input)
-        
-        # No extension added here as we'll add them in the main function
         
         # Ensure the directory exists
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         
-        main(paths, save_path, dpi)
+        main(paths, save_path)
     else:
         main(paths)
 
