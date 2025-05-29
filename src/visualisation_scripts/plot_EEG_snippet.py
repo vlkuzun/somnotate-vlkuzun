@@ -2,8 +2,22 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Set global font size
-plt.rcParams.update({'font.size': 20})  # Increase the global font size
+# Set global style for publication
+plt.rcParams.update({
+    'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
+    'font.size': 10,                # General font size
+    'axes.labelsize': 12,           # Axis label size
+    'axes.titlesize': 12,           # Title size
+    'xtick.labelsize': 10,          # X tick label size
+    'ytick.labelsize': 10,          # Y tick label size
+    'legend.fontsize': 10,          # Legend text size
+    'figure.dpi': 300,              # High-res output
+    'savefig.dpi': 600,             # High-res when saving
+    'figure.figsize': [4, 3],       # Width x Height in inches
+    'axes.linewidth': 1,            # Thinner axis borders
+    'pdf.fonttype': 42,             # Embed fonts properly in PDFs
+    'ps.fonttype': 42
+})
 
 # Load the data
 path_combined_df = '/Volumes/harris/Francesca/somnotate/checking_accuracy/combined_data.csv'
@@ -24,9 +38,9 @@ df_slice_downsampled = df_slice.iloc[::downsample_factor].reset_index(drop=True)
 
 # Define colors for each sleep stage using tones of blue
 colors = {
-    1: '#B3CDE3',  # Lightest blue for WAKE
-    2: '#6497B1',  # Medium blue for non-REM
-    3: '#005B96',  # Dark blue for REM
+    1: '#E69F00',  # Golden yellow for WAKE
+    2: '#56B4E9',  # Sky blue for non-REM
+    3: '#CC79A7',  # Pink/magenta for REM
 }
 
 # Plot function for the EEG signal
@@ -54,11 +68,9 @@ def plot_eeg(ax, eeg_data, sleep_stages, label):
     if current_stage is not None:
         ax.plot(time[start_index:], eeg_data[start_index:], color=colors.get(current_stage, 'gray'), lw=0.5)
 
-    ax.set_title(f'{label}', fontsize=24)  # Increased font size
+    ax.set_title(f'{label}')
     ax.set_yticks(np.arange(-500,505,500))
-    ax.set_ylabel('EEG (μV)', fontsize=22)  # Increased font size
-    ax.tick_params(axis='y', labelsize=20)  # Increased font size
-    ax.tick_params(axis='x', labelsize=20)  # Increased font size
+    ax.set_ylabel('EEG (μV)')
     
     # Only move y-axis to origin, keep x-axis at bottom
     ax.spines['left'].set_position(('data', 0))
@@ -68,8 +80,8 @@ def plot_eeg(ax, eeg_data, sleep_stages, label):
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
 
-# Create subplots
-fig, axes = plt.subplots(4, 1, figsize=(14, 10), sharex=True, sharey=True)  # Slightly larger figure
+# Create subplots - adjusted figure size for publication
+fig, axes = plt.subplots(4, 1, figsize=(8, 6), sharex=True, sharey=True)
 
 # Plot EEG with the corresponding sleep stages for each classifier using the downsampled data
 plot_eeg(axes[0], df_slice_downsampled['EEG2'], df_slice_downsampled['sleepStage_somnotate'], 'somnotate')
@@ -83,18 +95,18 @@ min_time = 0  # Starting time
 max_time = time_range  # Ending time
 
 # Add a unified x-axis label
-fig.text(0.56, 0.02, 'Time (seconds)', ha='center', fontsize=24)  # Increased font size
+fig.text(0.5, 0.02, 'Time (seconds)', ha='center')
 
 # Create a unified legend for sleep stages
 handles = [plt.Line2D([0], [0], color=colors[1], lw=2, label='Wake'),
            plt.Line2D([0], [0], color=colors[2], lw=2, label='NREM'),
            plt.Line2D([0], [0], color=colors[3], lw=2, label='REM')]
-labels = [f'Stage {stage}' for stage in colors]  # Fixed the syntax error in this line
+labels = [f'Stage {stage}' for stage in colors]
 
 # Adjust legend position to be above the plots
-fig.legend(handles=handles, loc='upper center', bbox_to_anchor=(0.93, 1.01), ncol=1, fontsize=18)  # Increased font size
+fig.legend(handles=handles, loc='upper right', bbox_to_anchor=(0.91, 1.0), ncol=1)
 
-plt.tight_layout(rect=[0, 0.05, 1, 0.93])  # Adjust layout to leave space for the legend and x-axis label
+plt.tight_layout(rect=[0, 0.05, 1, 0.95])  # Adjust layout to leave space for the legend and x-axis label
 
 # For all subplots, adjust the axis positions
 for i, ax in enumerate(axes):
@@ -110,8 +122,8 @@ for i, ax in enumerate(axes):
     # Adjust position to ensure axis starts at origin
     ax.set_position([0.125, ax.get_position().y0, 0.775, ax.get_position().height])
 
-# Save figure with high resolution (600 DPI)
-plt.savefig('/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.png', dpi=600, bbox_inches='tight')
-plt.savefig('/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.eps', format='eps', bbox_inches='tight')
+# Save figure - DPI is now controlled by the global parameters
+plt.savefig('/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.png', bbox_inches='tight')
+plt.savefig('/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.pdf', format='pdf', bbox_inches='tight')
 
 plt.show()
