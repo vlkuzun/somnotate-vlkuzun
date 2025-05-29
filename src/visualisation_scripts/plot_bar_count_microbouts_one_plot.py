@@ -2,6 +2,23 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+# Set global style for publication
+plt.rcParams.update({
+    'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
+    'font.size': 10,                # General font size
+    'axes.labelsize': 12,           # Axis label size
+    'axes.titlesize': 12,           # Title size
+    'xtick.labelsize': 10,          # X tick label size
+    'ytick.labelsize': 10,          # Y tick label size
+    'legend.fontsize': 10,          # Legend text size
+    'figure.dpi': 300,              # High-res output
+    'savefig.dpi': 600,             # High-res when saving
+    'figure.figsize': [4, 3],       # Width x Height in inches
+    'axes.linewidth': 1,            # Thinner axis borders
+    'pdf.fonttype': 42,             # Embed fonts properly in PDFs
+    'ps.fonttype': 42
+})
+
 # Load CSV file
 def load_data(file_path):
     """Load CSV file into a pandas DataFrame."""
@@ -36,7 +53,9 @@ def create_grouped_bar_chart(file_paths, output_file):
     """Create a grouped bar chart for micro bouts by sleep stage."""
     labels = ['Somnotate', 'Manual']
     stages = ['Wake', 'Non-REM', 'REM']
-    colors = ['#1f77b4', '#ff7f0e']  # Blue and Orange
+    
+    # Use consistent color scheme with alpha=0.7
+    colors = ['#1f77b4', '#333333']  # Blue (Somnotate) and Dark Gray (Manual)
 
     # Initialize lists to store bout counts
     somnotate_bouts = {1: 0, 2: 0, 3: 0}
@@ -67,55 +86,40 @@ def create_grouped_bar_chart(file_paths, output_file):
 
     x = range(len(stages))  # Positions for the groups
 
-    # Create the plot
-    fig, ax = plt.subplots(figsize=(10, 8))
+    # Create the plot - using rcParams for figure size
+    fig, ax = plt.subplots()
     
-    # Significantly increase font size for all text elements
-    TITLE_SIZE = 32
-    LABEL_SIZE = 28  
-    TICK_SIZE = 26
-    LEGEND_SIZE = 28
-
     bar_width = 0.35
     for i, (label, color) in enumerate(zip(labels, colors)):
         values = [data[stage][i] for stage in stages]
-        ax.bar([pos + i * bar_width for pos in x], values, bar_width, label=label, color=color)
+        ax.bar([pos + i * bar_width for pos in x], values, bar_width, 
+               label=label, color=color, alpha=0.7)
 
-    # Formatting the plot
+    # Formatting the plot using rcParams for font sizes
     ax.set_xticks([pos + bar_width / 2 for pos in x])
-    ax.set_xticklabels(['Wake', 'NREM','REM'], fontsize=LABEL_SIZE)
-    ax.set_ylabel('Occurrence', fontsize=LABEL_SIZE)
-    ax.tick_params(axis='both', which='major', labelsize=TICK_SIZE, width=1, length=4)
-
-    # Fix for y-tick labels
-    yticks = np.arange(0, 29, 5)
-    ax.set_yticks(yticks)
-    ax.set_yticklabels(yticks, fontsize=TICK_SIZE)
+    ax.set_xticklabels(['Wake', 'NREM', 'REM'])
+    ax.set_ylabel('Occurrence')
     
-    ax.legend(fontsize=LEGEND_SIZE, loc='upper right')
+    ax.legend(loc='upper right')
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
 
-    # Make remaining spines standard thickness (not thicker)
-    for spine in ['bottom', 'left']:
-        ax.spines[spine].set_linewidth(1)
-
     plt.tight_layout()
 
-    # Save plot in both PNG and EPS formats
+    # Save plot in PNG and PDF formats
     if output_file:
         # Extract base path without extension
         base_output = output_file.split('.')[0] if '.' in output_file else output_file
         
         # Save as PNG
         png_path = f"{base_output}.png"
-        plt.savefig(png_path, dpi=600, bbox_inches='tight')
+        plt.savefig(png_path, bbox_inches='tight')
         print(f"Figure saved as PNG: {png_path}")
         
-        # Save as EPS (vector format for publication)
-        eps_path = f"{base_output}.eps"
-        plt.savefig(eps_path, format='eps', bbox_inches='tight')
-        print(f"Figure saved as EPS: {eps_path}")
+        # Save as PDF (vector format for publication)
+        pdf_path = f"{base_output}.pdf"
+        plt.savefig(pdf_path, format='pdf', bbox_inches='tight')
+        print(f"Figure saved as PDF: {pdf_path}")
     
     # Display the plot
     plt.show()
