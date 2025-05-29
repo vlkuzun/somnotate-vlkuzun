@@ -48,9 +48,9 @@ def create_pie_chart(df, output_dir, filename, title):
     
     # Define consistent colors for sleep stages
     colors = {
-        'Wake': '#FFFDD0',  # Cream color for Wake
-        'NREM': '#ADD8E6',  # Light blue for NREM
-        'REM': '#90EE90'    # Light green for REM
+        'Wake': '#E69F00',  # Cream color for Wake
+        'NREM': '#56B4E9',  # Light blue for NREM
+        'REM': '#CC79A7'    # Light green for REM
     }
     
     # Use manual labels with font sizes from rcParams
