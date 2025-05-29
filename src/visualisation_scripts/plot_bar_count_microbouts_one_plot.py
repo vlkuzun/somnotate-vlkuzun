@@ -55,7 +55,7 @@ def create_grouped_bar_chart(file_paths, output_file):
     stages = ['Wake', 'Non-REM', 'REM']
     
     # Use consistent color scheme with alpha=0.7
-    colors = ['#1f77b4', '#333333']  # Blue (Somnotate) and Dark Gray (Manual)
+    colors = ['#1f77b4', '#41403e']  # Blue (Somnotate) and Dark Gray (Manual)
 
     # Initialize lists to store bout counts
     somnotate_bouts = {1: 0, 2: 0, 3: 0}
@@ -93,7 +93,8 @@ def create_grouped_bar_chart(file_paths, output_file):
     for i, (label, color) in enumerate(zip(labels, colors)):
         values = [data[stage][i] for stage in stages]
         ax.bar([pos + i * bar_width for pos in x], values, bar_width, 
-               label=label, color=color, alpha=0.7)
+               label=label, color=color, alpha=0.7, 
+               edgecolor='black', linewidth=0.5)  # Add black edge with 0.5 width
 
     # Formatting the plot using rcParams for font sizes
     ax.set_xticks([pos + bar_width / 2 for pos in x])
