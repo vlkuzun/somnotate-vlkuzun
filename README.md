@@ -15,6 +15,13 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
+## Pull repo into working directory
+
+Move into a directory that you want to save your repo into and enter into command line
+
+```bash
+git clone https://github.com/vlkuzun/somnotate-vlkuzun
+```
 
 ## Installation of required packages
 
