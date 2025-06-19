@@ -1,0 +1,33 @@
+2025-06-19 18:14:57,477 - INFO - Created directory: /Volumes/harris/volkan/somnotate-vlkuzun-testing/to_score_set/to_score_csv_files
+2025-06-19 18:14:57,478 - INFO - Created directory: /Volumes/harris/volkan/somnotate-vlkuzun-testing/to_score_set/edfs
+2025-06-19 18:14:57,479 - INFO - Created directory: /Volumes/harris/volkan/somnotate-vlkuzun-testing/to_score_set/to_score_manual_annotation
+2025-06-19 18:14:57,486 - INFO - Created directory: /Volumes/harris/volkan/somnotate-vlkuzun-testing/to_score_set/preprocessed_signals
+2025-06-19 18:14:57,496 - INFO - Created directory: /Volumes/harris/volkan/somnotate-vlkuzun-testing/to_score_set/automated_annotation
+2025-06-19 18:14:57,523 - INFO - Created directory: /Volumes/harris/volkan/somnotate-vlkuzun-testing/to_score_set/int
+2025-06-19 18:14:57,532 - INFO - Created directory: /Volumes/harris/volkan/somnotate-vlkuzun-testing/to_score_set/output_figures
+2025-06-19 18:14:57,532 - INFO - STEP 1: MAT to CSV Conversion
+2025-06-19 18:14:57,537 - INFO - Converting 1 MAT files to CSV
+2025-06-19 18:14:57,655 - INFO - MAT to CSV conversion completed successfully
+2025-06-19 18:14:57,655 - INFO - STEP 2: Generate EDF and Visbrain Format Files
+2025-06-19 18:14:57,660 - WARNING - File not found: /Volumes/harris/volkan/somnotate-vlkuzun-testing/to_score_set/to_score_csv_files/sub-015_ses-01_recording-01.csv
+2025-06-19 18:14:57,660 - INFO - EDF and Visbrain format generation completed successfully
+2025-06-19 18:14:57,661 - INFO - STEP 3: Generate Path Sheet
+2025-06-19 18:14:57,668 - ERROR - Error during path sheet generation: The number of manual annotations does not match the number of raw signals.
+2025-06-19 18:14:57,668 - INFO - STEP 4: Preprocess Signals
+2025-06-19 18:14:57,669 - ERROR - Path sheet not found at /Volumes/harris/volkan/somnotate-vlkuzun-testing/to_score_set/to_score_sheet.csv
+2025-06-19 18:14:57,669 - INFO - STEP 5: Automated Sleep Stage Annotation
+2025-06-19 18:14:57,669 - ERROR - Path sheet not found at /Volumes/harris/volkan/somnotate-vlkuzun-testing/to_score_set/to_score_sheet.csv
+2025-06-19 18:14:57,669 - INFO - STEP 6: Calculate Sleep State Proportions
+2025-06-19 18:14:57,673 - ERROR - No annotation files found to analyze
+2025-06-19 18:14:57,673 - INFO - 
+==================================================
+2025-06-19 18:14:57,673 - INFO - Pipeline Execution Summary
+2025-06-19 18:14:57,673 - INFO - ==================================================
+2025-06-19 18:14:57,673 - INFO - MAT to CSV Conversion: SUCCESS
+2025-06-19 18:14:57,673 - INFO - EDF and Visbrain Generation: SUCCESS
+2025-06-19 18:14:57,673 - INFO - Path Sheet Generation: FAILED
+2025-06-19 18:14:57,673 - INFO - Signal Preprocessing: FAILED
+2025-06-19 18:14:57,673 - INFO - Sleep Stage Annotation: FAILED
+2025-06-19 18:14:57,673 - INFO - Sleep State Proportion Analysis: FAILED
+2025-06-19 18:14:57,673 - WARNING - 
+Some steps failed. Please check the log for details.

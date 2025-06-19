@@ -3,12 +3,7 @@ import os
 import pandas as pd
 
 
-# Ask for user input in the terminal for dataset type, base directory, and sampling rate
-train_test_or_to_score = input("Enter dataset type ('train', 'test', or 'to_score'): ")
-base_directory = input("Enter the somnotate base directory path without quotes (e.g., Z:/somnotate): ")
-sampling_rate = float(input("Enter the sampling rate (e.g., 512.0): "))
-
-def make_train_and_test_sheet(train_test_or_to_score, base_directory=base_directory, sampling_rate=sampling_rate):
+def make_train_and_test_sheet(train_test_or_to_score, base_directory, sampling_rate):
     """Create a CSV file containing the file paths of the raw signals, manual annotations, and preprocessed signals.
     Input:
     - train_test_or_to_score: str, the dataset type ('train', 'test', or 'to_score').
@@ -128,12 +123,20 @@ def make_train_and_test_sheet(train_test_or_to_score, base_directory=base_direct
         csv_data_list.append(csv_data)
 
     # Save the CSV data to a file
-
     df = pd.DataFrame(csv_data_list)
-    df.to_csv(os.path.join(csv_file_directory, f"{train_test_or_to_score}_sheet" + ".csv"), index=False)
+    output_path = os.path.join(csv_file_directory, f"{train_test_or_to_score}_sheet" + ".csv")
+    df.to_csv(output_path, index=False)
+    return output_path
 
+
+# Only run this block if the script is executed directly, not when imported
 if __name__ == '__main__':
-    make_train_and_test_sheet(train_test_or_to_score, base_directory=base_directory, sampling_rate=sampling_rate)
+    # Ask for user input directly only when run as a script
+    train_test_or_to_score = input("Enter dataset type ('train', 'test', or 'to_score'): ")
+    base_directory = input("Enter the somnotate base directory path without quotes (e.g., Z:/somnotate): ")
+    sampling_rate = float(input("Enter the sampling rate (e.g., 512.0): "))
+    
+    make_train_and_test_sheet(train_test_or_to_score, base_directory, sampling_rate)
 
 
 
