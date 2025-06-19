@@ -20,9 +20,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from preprocess_signals import preprocess, main as preprocess_signals
-from run_state_annotation import export_intervals_with_state_probability_below_threshold, main as run_state_annotation
-
 __version__ = "0.1.0"
 __author__ = "Volkan Uzungil"
 __email__ = "vuzungil@gmail.com"

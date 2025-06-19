@@ -3,7 +3,7 @@ import numpy as np
 import pyedflib
 import os
 
-def generate_edf_and_visbrain_formats(mouse_ids, sessions, recordings, extra_info, test_train_or_to_score, base_directory, sampling_rate):
+def generate_edf_and_visbrain_formats(mouse_ids, sessions, recordings, extra_info, test_train_or_to_score, base_directory, sample_frequency):
     '''
     Generate EDF and Visbrain stage duration format files from CSV files, respectively for EEG and EMG data and sleep stage annotations.
     
@@ -75,7 +75,7 @@ def generate_edf_and_visbrain_formats(mouse_ids, sessions, recordings, extra_inf
                     signal_info = {
                         'label': label,
                         'dimension': 'uV',
-                        'sample_rate': sampling_rate,
+                        'sample_frequency': sample_frequency,  # Changed from sample_rate to sample_frequency
                         'physical_min': np.min(all_data[i]),
                         'physical_max': np.max(all_data[i]),
                         'digital_min': -32768,
@@ -92,16 +92,16 @@ def generate_edf_and_visbrain_formats(mouse_ids, sessions, recordings, extra_inf
                 # Prepare annotations in Visbrain stage duration format
                 annotations = [(0, 10, "Undefined")]
                 current_stage = None
-                start_time = 10 / sampling_rate
+                start_time = 10 / sample_frequency
 
                 for i, label in enumerate(df["sleepStage"]):
-                    current_time = i / sampling_rate
+                    current_time = i / sample_frequency
                     if label != current_stage:
                         if current_stage is not None:
                             annotations.append((start_time, current_time, current_stage))
                         current_stage = label
                         start_time = current_time
-                annotations.append((start_time, len(df) / sampling_rate, current_stage))
+                annotations.append((start_time, len(df) / sample_frequency, current_stage))
 
                 # Write annotations to a text file
                 last_time_value = annotations[-1][1]
@@ -121,6 +121,6 @@ if __name__ == "__main__":
     extra_info = input("Enter any extra details about the recording for differentiation (leave blank if not applicable): ").strip()
     test_train_or_to_score = input("Enter dataset type ('test', 'train', or 'to_score'): ").strip()
     base_directory = input("Enter the base somnotate directory path without quotes (e.g., Z:/somnotate): ").strip()
-    sampling_rate = float(input("Enter the sampling rate in Hz (e.g., 512.0): "))
+    sample_frequency = float(input("Enter the sampling rate in Hz (e.g., 512.0): "))
 
-    generate_edf_and_visbrain_formats(mouse_ids, sessions, recordings, extra_info, test_train_or_to_score, base_directory, sampling_rate)
+    generate_edf_and_visbrain_formats(mouse_ids, sessions, recordings, extra_info, test_train_or_to_score, base_directory, sample_frequency)
