@@ -75,7 +75,7 @@ def generate_edf_and_visbrain_formats(mouse_ids, sessions, recordings, extra_inf
                     signal_info = {
                         'label': label,
                         'dimension': 'uV',
-                        'sample_rate': sampling_rate,
+                        'sample_frequency': sampling_rate,  # Changed from 'sample_rate' to 'sample_frequency'
                         'physical_min': np.min(all_data[i]),
                         'physical_max': np.max(all_data[i]),
                         'digital_min': -32768,
