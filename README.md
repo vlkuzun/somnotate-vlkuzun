@@ -15,10 +15,19 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
+## Pull repo into working directory
+
+Move into a directory that you want to save your repo into and enter into command line
+
+```bash
+git clone https://github.com/vlkuzun/somnotate-vlkuzun
+```
 
 ## Installation of required packages
 
 Move into working directory of repo and install required packages via
+
+Note: environment.yml file name entry needs to be the name of the environment that you have created, otherwise it will create a new environment with the name inside environment.yml
 
 ```bash
 conda activate myenv
