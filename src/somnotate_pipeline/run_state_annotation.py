@@ -60,8 +60,12 @@ def _get_score(vec):
     return len(vec) - np.sum(vec)
 
 
-if __name__ == '__main__':
-
+def main():
+    """
+    Main function to run automated state annotation on preprocessed signals.
+    
+    This function can be called directly or when the script is run as a standalone program.
+    """
     from configuration import (
         state_to_int,
         int_to_state,
@@ -147,4 +151,9 @@ if __name__ == '__main__':
             fig.tight_layout()
             fig.suptitle(dataset['file_path_preprocessed_signals'])
 
-    plt.show()
+    if args.show:
+        plt.show()
+
+
+if __name__ == '__main__':
+    main()

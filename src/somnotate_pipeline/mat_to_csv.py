@@ -3,23 +3,6 @@ import pandas as pd
 import h5py
 import os
 
-# Ask for user input in the terminal for paths and recording parameters
-train_test_or_to_score = input("Enter dataset type ('train', 'test', or 'to_score'): ")
-output_directory_path = input(f"Enter the output directory path for {train_test_or_to_score} CSV files, without quotes (e.g., Z:/somnotate/to_score_set/to_score_csv_files): ")
-sampling_rate = int(input("Enter the sampling rate in Hz (e.g., 512): "))
-sleep_stage_resolution = int(input("Enter the sleep stage resolution in seconds (e.g., 10): "))
-
-# Allow user to enter file paths one by one
-file_paths = []
-while True:
-    file_path = input("Enter the full path of a .mat file to convert (or press Enter to finish): ")
-    if file_path == "":
-        break
-    if os.path.isfile(file_path) and file_path.endswith('.mat'):
-        file_paths.append(file_path)
-    else:
-        print("Invalid file path. Please enter a valid .mat file path.")
-
 def mat_to_csv(file_paths, output_directory_path, sampling_rate, sleep_stage_resolution):
     '''
     Converts .mat files extracted from Spike2 into .csv files to be used in the somnotate pipeline.
@@ -95,5 +78,34 @@ def mat_to_csv(file_paths, output_directory_path, sampling_rate, sleep_stage_res
             print(f'Saved CSV to: {output_file_path}')
 
 if __name__ == "__main__":
-    print("Starting main block...")
-    mat_to_csv(file_paths, output_directory_path, sampling_rate, sleep_stage_resolution)
+    print("MAT to CSV Conversion Utility")
+    print("-----------------------------")
+    
+    # These inputs are only requested when the script is run directly
+    train_test_or_to_score = input("Enter dataset type ('train', 'test', or 'to_score'): ")
+    base_directory = input(f"Enter the base somnotate directory path without quotes (e.g., Z:/somnotate): ")
+    output_directory_path = os.path.join(base_directory, f"{train_test_or_to_score}_set", f"{train_test_or_to_score}_csv_files")
+    sampling_rate = int(input("Enter the sampling rate in Hz (e.g., 512): "))
+    sleep_stage_resolution = int(input("Enter the sleep stage resolution in seconds (e.g., 10): "))
+
+    # Allow user to enter file paths one by one
+    file_paths = []
+    print("\nEnter the full paths of .mat files to convert (press Enter on an empty line to finish):")
+    while True:
+        file_path = input("Enter file path: ")
+        if file_path == "":
+            break
+        if os.path.isfile(file_path) and file_path.endswith('.mat'):
+            file_paths.append(file_path)
+        else:
+            print("Invalid file path. Please enter a valid .mat file path.")
+    
+    if file_paths:
+        print(f"\nWill process {len(file_paths)} files and save to {output_directory_path}")
+        proceed = input("Continue? (y/n): ").strip().lower() == 'y'
+        if proceed:
+            mat_to_csv(file_paths, output_directory_path, sampling_rate, sleep_stage_resolution)
+        else:
+            print("Operation cancelled.")
+    else:
+        print("No files to convert. Exiting.")

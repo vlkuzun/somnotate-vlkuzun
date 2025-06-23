@@ -8,6 +8,7 @@ TODO:
 - fix plotting (`time` encapsulated at the moment...)
 """
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -109,8 +110,12 @@ def preprocess(raw_signal, sampling_frequency_in_hz,
     return time, frequencies, spectrogram
 
 
-if __name__ == '__main__':
-
+def main():
+    """
+    Main function to run the preprocessing pipeline on datasets specified in a spreadsheet.
+    
+    This function can be called directly or when the script is run as a standalone program.
+    """
     from configuration import (
         time_resolution,
         state_annotation_signals,
@@ -190,9 +195,10 @@ if __name__ == '__main__':
             plt.savefig(f'{output_folder}/preprocessed_signals_{ii}.png')  # replace 'preprocessed_signals_{ii}.png' with your desired filename pattern
             plt.close(fig)
 
-# plt.savefig(f'preprocessed_signals_{ii}.png')
         # concatenate spectrograms into one set of features and save out
         preprocessed_signals = np.concatenate([signal.T for signal in preprocessed_signals], axis=1)
         export_preprocessed_signals(dataset['file_path_preprocessed_signals'], preprocessed_signals)
 
-#    plt.show()
+
+if __name__ == '__main__':
+    main()
