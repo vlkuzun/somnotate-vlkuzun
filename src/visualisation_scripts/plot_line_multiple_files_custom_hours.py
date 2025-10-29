@@ -6,7 +6,24 @@ from matplotlib.patches import Rectangle
 
 from scipy.ndimage import gaussian_filter1d
 
-def plot_sleep_stages(files, subjects, fontsize=24):
+# Set global style for publication
+plt.rcParams.update({
+    'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
+    'font.size': 10,                # General font size
+    'axes.labelsize': 12,           # Axis label size
+    'axes.titlesize': 12,           # Title size
+    'xtick.labelsize': 10,          # X tick label size
+    'ytick.labelsize': 10,          # Y tick label size
+    'legend.fontsize': 10,          # Legend text size
+    'figure.dpi': 300,              # High-res output
+    'savefig.dpi': 600,             # High-res when saving
+    'figure.figsize': [4, 3],       # Width x Height in inches
+    'axes.linewidth': 1,            # Thinner axis borders
+    'pdf.fonttype': 42,             # Embed fonts properly in PDFs
+    'ps.fonttype': 42
+})
+
+def plot_sleep_stages(files, subjects):
     """
     Plots wake_percent, non_rem_percent, and rem_percent from multiple files on the same graph.
     Adds a 12-hour cycle bar beneath the main graph, colored based on ZT_Adjusted values.
@@ -14,7 +31,6 @@ def plot_sleep_stages(files, subjects, fontsize=24):
     Args:
         files (list of str): List of file paths. Each file should have columns ZT, wake_percent, non_rem_percent, and rem_percent.
         subjects (list of str): List of subject names corresponding to each file.
-        fontsize (int): Base font size for plot elements (default: 24).
     """
     if not isinstance(files, list) or len(files) == 0:
         raise ValueError("Please provide a list of file paths.")
@@ -22,11 +38,11 @@ def plot_sleep_stages(files, subjects, fontsize=24):
     if not isinstance(subjects, list) or len(subjects) != len(files):
         raise ValueError("Please provide a list of subject names matching the number of files.")
 
-    # Define consistent colors for each sleep stage
+    # Define consistent colors for each sleep stage using color-blind friendly palette
     colors = {
-        'wake_percent': 'red',
-        'non_rem_percent': 'blue',
-        'rem_percent': 'green',
+        'wake_percent': '#E69F00',    # Golden yellow for Wake
+        'non_rem_percent': '#56B4E9',  # Sky blue for NREM
+        'rem_percent': '#CC79A7',      # Pink/magenta for REM
     }
 
     # Define line styles for different files
@@ -38,9 +54,6 @@ def plot_sleep_stages(files, subjects, fontsize=24):
         'non_rem_percent': 'NREM',
         'rem_percent': 'REM'
     }
-
-    # Set the font sizes globally
-    plt.rcParams.update({'font.size': fontsize})
     
     # Create the main plot with more space at the top for legend
     fig = plt.figure(figsize=(16, 4))  # Increased figure height to make room for legend
@@ -148,13 +161,11 @@ def plot_sleep_stages(files, subjects, fontsize=24):
 
     # Set x-axis ticks and labels
     ax1.set_xticks(xtick_locations)
-    ax1.set_xticklabels(xtick_labels, fontsize=fontsize)
-    ax1.tick_params(axis='y', labelsize=fontsize)
-    ax1.tick_params(axis='x', labelsize=fontsize)
+    ax1.set_xticklabels(xtick_labels)
 
     # Adding labels, legend, and title to the main plot
-    ax1.set_xlabel('Zeitgeber Time', fontsize=fontsize+2)
-    ax1.set_ylabel('Percentage', fontsize=fontsize+2)
+    ax1.set_xlabel('Zeitgeber Time')
+    ax1.set_ylabel('Percentage')
     
     # Create custom legend items to organize by subject and ensure row-wise filling
     from matplotlib.lines import Line2D
@@ -175,8 +186,8 @@ def plot_sleep_stages(files, subjects, fontsize=24):
                label="REM (Manual)")
     ]
 
-    ax1.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.0, 1.55),
-               ncol=3, fontsize=fontsize-6, frameon=True, 
+    ax1.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.0, 1.35),
+               ncol=3, frameon=True, 
                handlelength=1.5, columnspacing=1.0, 
                handletextpad=0.5)
     
@@ -193,17 +204,20 @@ def plot_sleep_stages(files, subjects, fontsize=24):
 
     # Set x-axis ticks at 0, 50, 100
     ax1.set_yticks([0, 50, 100])
-    ax1.set_yticklabels(['0', '50', '100'], fontsize=fontsize)
+    ax1.set_yticklabels(['0', '50', '100'])
    
     # Use subplots_adjust instead of tight_layout to have more control
     # This creates more space at the top for the legend
     plt.subplots_adjust(top=0.65, bottom=0.25, left=0.1, right=0.95)
 
-    # Save figure in both PNG and EPS formats
+    # Save figure in PNG, PDF, and EPS formats
     output_path = '/Volumes/harris/volkan/somnotate-vlkuzun/plots/stage_across_ZT/somnotate_vs_manual_sub-010_fp_stage_across_ZT_70hr'
-    plt.savefig(f"{output_path}.png", dpi=600)
-    plt.savefig(f"{output_path}.eps", format='eps')
-    print(f"Figure saved as {output_path}.png with 600 DPI and as {output_path}.eps")
+    plt.savefig(f"{output_path}.png", dpi=600, bbox_inches='tight')
+    plt.savefig(f"{output_path}.pdf", format='pdf', bbox_inches='tight')
+    plt.savefig(f"{output_path}.eps", format='eps', bbox_inches='tight')
+    print(f"Figure saved as PNG: {output_path}.png")
+    print(f"Figure saved as PDF: {output_path}.pdf")
+    print(f"Figure saved as EPS: {output_path}.eps")
 
     # Show the plot
     plt.show()
@@ -211,5 +225,4 @@ def plot_sleep_stages(files, subjects, fontsize=24):
 # Example usage
 plot_sleep_stages(['/Volumes/harris/volkan/sleep-profile/downsample_auto_score/sub-010_ses-01_recording-01_time-0-69h_1Hz_1hrbins.csv', 
                   '/Volumes/harris/volkan/sleep-profile/downsample_manual_score/sub-010_ses-01_recording-01_time-0-69h_manual_sr-1hz_1hrbins_ZT.csv'], 
-                 ['Somnotate', 'Manual'],
-                 fontsize=24)
+                 ['Somnotate', 'Manual'])

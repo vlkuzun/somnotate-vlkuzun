@@ -163,10 +163,14 @@ def analyze_bout_durations_light_dark_phase(file_subject_dict, output_folder):
     pdf_filename = f"{output_folder}/all_subjects_combined_bout_durations_light_and_dark_updated.pdf"
     plt.savefig(pdf_filename, format='pdf', bbox_inches='tight')
     
+    # Save as EPS format
+    eps_filename = f"{output_folder}/all_subjects_combined_bout_durations_light_and_dark_updated.eps"
+    plt.savefig(eps_filename, format='eps', bbox_inches='tight')
+    
     plt.show()
     plt.close()
 
-    print("Plot saved successfully as PNG and PDF.")
+    print("Plot saved successfully as PNG, PDF, and EPS.")
 
     # Perform a t-test to check for statistical differences between Light and Dark phases
     light_data = pooled_data[pooled_data['timePeriod'] == 'Light']['boutDuration']

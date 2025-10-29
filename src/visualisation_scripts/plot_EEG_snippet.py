@@ -125,5 +125,6 @@ for i, ax in enumerate(axes):
 # Save figure - DPI is now controlled by the global parameters
 plt.savefig('/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.png', bbox_inches='tight')
 plt.savefig('/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.pdf', format='pdf', bbox_inches='tight')
+plt.savefig('/Volumes/harris/volkan/somnotate-vlkuzun/plots/performance_vs_manual/somno_vs_manual_eeg_snippet.eps', format='eps', bbox_inches='tight')
 
 plt.show()

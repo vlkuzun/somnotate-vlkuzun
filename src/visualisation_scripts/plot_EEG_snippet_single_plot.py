@@ -2,6 +2,23 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+# Set global style for publication
+plt.rcParams.update({
+    'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
+    'font.size': 10,                # General font size
+    'axes.labelsize': 12,           # Axis label size
+    'axes.titlesize': 12,           # Title size
+    'xtick.labelsize': 10,          # X tick label size
+    'ytick.labelsize': 10,          # Y tick label size
+    'legend.fontsize': 10,          # Legend text size
+    'figure.dpi': 300,              # High-res output
+    'savefig.dpi': 600,             # High-res when saving
+    'figure.figsize': [4, 3],       # Width x Height in inches
+    'axes.linewidth': 1,            # Thinner axis borders
+    'pdf.fonttype': 42,             # Embed fonts properly in PDFs
+    'ps.fonttype': 42
+})
+
 # Load the data
 path_combined_df = '/Volumes/harris/Francesca/somnotate/checking_accuracy/combined_data.csv'
 combined_df = pd.read_csv(path_combined_df)
@@ -25,9 +42,9 @@ df_slice_downsampled = df_slice.iloc[::downsample_factor].reset_index(drop=True)
 
 # Define colors for each sleep stage using tones of blue
 colors = {
-    1: 'red',  # red for Awake
-    2: 'blue',  # blue for non-REM
-    #3: '#005B96',  # Dark blue for REM
+    1: '#E69F00',  # Golden yellow for Wake
+    2: '#56B4E9',  # Sky blue for NREM
+    #3: '#CC79A7',  # Pink/magenta for REM
 }
 
 
@@ -128,9 +145,13 @@ plt.subplots_adjust(left=0.05, right=0.95)
 
 # Display the plot
 plt.tight_layout()
-# Save as PNG and EPS
-output_path = '/Volumes/harris/volkan/somnotate-vlkuzun`/plots/likelihood_scoring/awake_nrem_likelihood_eeg_snippet_shading_sub-010'
+
+# Save as PNG, PDF, and EPS
+output_path = '/Volumes/harris/volkan/somnotate-vlkuzun/plots/likelihood_scoring/awake_nrem_likelihood_eeg_snippet_shading_sub-010'
 plt.savefig(f"{output_path}.png", dpi=600, bbox_inches='tight')
+plt.savefig(f"{output_path}.pdf", format='pdf', bbox_inches='tight')
 plt.savefig(f"{output_path}.eps", format='eps', bbox_inches='tight')
-print(f"Figure saved as {output_path}.png with 600 DPI and as {output_path}.eps")
+print(f"Figure saved as PNG: {output_path}.png")
+print(f"Figure saved as PDF: {output_path}.pdf")
+print(f"Figure saved as EPS: {output_path}.eps")
 plt.show()

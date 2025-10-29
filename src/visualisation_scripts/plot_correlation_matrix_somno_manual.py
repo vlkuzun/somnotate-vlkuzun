@@ -78,8 +78,13 @@ def main(paths, save_path=None):
         pdf_path = f"{base_save_path}.pdf"
         plt.savefig(pdf_path, format='pdf', bbox_inches='tight')
         
+        # Save as EPS format
+        eps_path = f"{base_save_path}.eps"
+        plt.savefig(eps_path, format='eps', bbox_inches='tight')
+        
         print(f"Figure saved as PDF: {pdf_path}")
         print(f"Figure saved as PNG: {png_path}")
+        print(f"Figure saved as EPS: {eps_path}")
     else:
         plt.show()
 
