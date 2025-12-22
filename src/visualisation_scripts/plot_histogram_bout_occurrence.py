@@ -96,6 +96,11 @@ def compare_histograms(file_1, file_2, sampling_rate=1, max_duration=600, bin_si
         pdf_path = f"{base_path}.pdf"
         plt.savefig(pdf_path, format='pdf', bbox_inches='tight')
         print(f"Figure saved as PDF: {pdf_path}")
+        
+        # Save as EPS format
+        eps_path = f"{base_path}.eps"
+        plt.savefig(eps_path, format='eps', bbox_inches='tight')
+        print(f"Figure saved as EPS: {eps_path}")
     
     # Always show the plot regardless of whether it was saved
     plt.show()
@@ -107,7 +112,7 @@ compare_histograms(
     file_1="/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/automated_state_annotationoutput_sub-010_ses-01_recording-01_timestamped_sr-1hz.csv",
     file_2="/Volumes/harris/volkan/somnotate-vlkuzun/somnotate_performance/sub-010_ses-01_recording-01_data-sleepscore_fp_timestamped_sr-1hz.csv",
     sampling_rate=1,  # or other sampling rates if required
-    max_duration=600,  # maximum bout duration to include (seconds)
-    bin_size=60,  # size of histogram bins (seconds)
+    max_duration=120,  # maximum bout duration to include (seconds)
+    bin_size=15,  # size of histogram bins (seconds)
     output_path=output_file  # Pass the output path to save the figure
 )

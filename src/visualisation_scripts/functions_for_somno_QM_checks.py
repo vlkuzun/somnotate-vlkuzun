@@ -380,7 +380,7 @@ def plot_bout_duration_histograms_with_significance(bout_durations_dict, sleep_s
     # Adjust spacing to fit the title and plot comfortably
     plt.tight_layout()
     
-    # Save the figure in both PNG and PDF formats
+    # Save the figure in PNG, PDF, and EPS formats
     base_filename = f"/Volumes/harris/volkan/somnotate-vlkuzun/plots/bout_duration/barplot_bout_duration/barplot_bout_duration_{sleep_stage_label.replace(' ', '_')}"
     
     # Save as PNG
@@ -388,6 +388,9 @@ def plot_bout_duration_histograms_with_significance(bout_durations_dict, sleep_s
     
     # Save as PDF for publication quality
     plt.savefig(f"{base_filename}.pdf", format='pdf', bbox_inches='tight')
+    
+    # Save as EPS format
+    plt.savefig(f"{base_filename}.eps", format='eps', bbox_inches='tight')
     
     plt.show()
     plt.close()
