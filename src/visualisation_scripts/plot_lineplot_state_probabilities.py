@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from stage_colors import WAKE_COLOR, NREM_COLOR
+
 # Set global style for publication
 plt.rcParams.update({
     'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
@@ -141,8 +143,8 @@ def plot_awake_and_non_rem(awake_data, non_rem_data, start_idx, end_idx, save_pa
 
     # Plot the data - use figsize from rcParams
     plt.figure()
-    plt.plot(x, awake_values, label='Wake', color='#E69F00', linewidth=1)
-    plt.plot(x, non_rem_values, label='NREM', color='#56B4E9', linewidth=1)
+    plt.plot(x, awake_values, label='Wake', color=WAKE_COLOR, linewidth=1)
+    plt.plot(x, non_rem_values, label='NREM', color=NREM_COLOR, linewidth=1)
 
     # Shade the regions that satisfy the condition
     for region in shaded_indices:

@@ -4,7 +4,24 @@ import numpy as np
 from scipy.ndimage import gaussian_filter1d
 from matplotlib.patches import Rectangle
 
-from scipy.ndimage import gaussian_filter1d
+from stage_colors import WAKE_COLOR, NREM_COLOR, REM_COLOR
+
+# Set global style for publication-quality figures
+plt.rcParams.update({
+    'font.family': 'Arial',
+    'font.size': 10,
+    'axes.labelsize': 12,
+    'axes.titlesize': 12,
+    'xtick.labelsize': 10,
+    'ytick.labelsize': 10,
+    'legend.fontsize': 10,
+    'figure.dpi': 300,
+    'savefig.dpi': 600,
+    'figure.figsize': [4, 3],
+    'axes.linewidth': 1,
+    'pdf.fonttype': 42,
+    'ps.fonttype': 42,
+})
 
 def plot_sleep_stages(files, subjects, fontsize=24):
     """
@@ -24,9 +41,9 @@ def plot_sleep_stages(files, subjects, fontsize=24):
 
     # Define consistent colors for each sleep stage
     colors = {
-        'wake_percent': 'red',
-        'non_rem_percent': 'blue',
-        'rem_percent': 'green',
+        'wake_percent': WAKE_COLOR,
+        'non_rem_percent': NREM_COLOR,
+        'rem_percent': REM_COLOR,
     }
 
     # Define line styles for different files
@@ -154,7 +171,7 @@ def plot_sleep_stages(files, subjects, fontsize=24):
 
     # Adding labels, legend, and title to the main plot
     ax1.set_xlabel('Zeitgeber Time', fontsize=fontsize+2)
-    ax1.set_ylabel('Percentage', fontsize=fontsize+2)
+    ax1.set_ylabel('Percent (%)', fontsize=fontsize+2)
     
     # Create custom legend items to organize by subject and ensure row-wise filling
     from matplotlib.lines import Line2D
@@ -176,7 +193,7 @@ def plot_sleep_stages(files, subjects, fontsize=24):
     ]
 
     ax1.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.0, 1.55),
-               ncol=3, fontsize=fontsize-6, frameon=True, 
+               ncol=3, fontsize=fontsize-6, frameon=False, 
                handlelength=1.5, columnspacing=1.0, 
                handletextpad=0.5)
     
@@ -202,8 +219,8 @@ def plot_sleep_stages(files, subjects, fontsize=24):
     # Save figure in both PNG and EPS formats
     output_path = '/Volumes/harris/volkan/somnotate-vlkuzun/plots/stage_across_ZT/somnotate_vs_manual_sub-010_fp_stage_across_ZT_70hr'
     plt.savefig(f"{output_path}.png", dpi=600)
-    plt.savefig(f"{output_path}.eps", format='eps')
-    print(f"Figure saved as {output_path}.png with 600 DPI and as {output_path}.eps")
+    plt.savefig(f"{output_path}.pdf", format='pdf')
+    print(f"Figure saved as {output_path}.png with 600 DPI and as {output_path}.pdf")
 
     # Show the plot
     plt.show()

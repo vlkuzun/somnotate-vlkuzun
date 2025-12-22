@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from stage_colors import WAKE_COLOR, NREM_COLOR, REM_COLOR
+
 # Set global style for publication
 plt.rcParams.update({
     'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
@@ -48,9 +50,9 @@ def create_pie_chart(df, output_dir, filename, title):
     
     # Define consistent colors for sleep stages
     colors = {
-        'Wake': '#E69F00',  # Cream color for Wake
-        'NREM': '#56B4E9',  # Light blue for NREM
-        'REM': '#CC79A7'    # Light green for REM
+        'Wake': WAKE_COLOR,
+        'NREM': NREM_COLOR,
+        'REM': REM_COLOR
     }
     
     # Use manual labels with font sizes from rcParams

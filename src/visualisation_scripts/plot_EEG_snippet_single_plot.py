@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+from stage_colors import STAGE_COLORS_BY_ID
+
 # Load the data
 path_combined_df = '/Volumes/harris/Francesca/somnotate/checking_accuracy/combined_data.csv'
 combined_df = pd.read_csv(path_combined_df)
@@ -23,12 +25,8 @@ df_slice = combined_df.iloc[start_index:end_index]
 downsample_factor = 5  # Change this value to downsample more heavily if necessary
 df_slice_downsampled = df_slice.iloc[::downsample_factor].reset_index(drop=True)
 
-# Define colors for each sleep stage using tones of blue
-colors = {
-    1: 'red',  # red for Awake
-    2: 'blue',  # blue for non-REM
-    #3: '#005B96',  # Dark blue for REM
-}
+# Define colors for each sleep stage using the shared palette
+colors = dict(STAGE_COLORS_BY_ID)
 
 
 def plot_single_eeg(ax, eeg_data, sleep_stages, label, time_window_start, shade_time_ranges):
@@ -84,7 +82,7 @@ def plot_single_eeg(ax, eeg_data, sleep_stages, label, time_window_start, shade_
 
     # Set the title and axis labels
     #ax.set_title(f'{label}', fontsize=22, pad=30)
-    ax.set_ylabel('EEG (μV)', fontsize=22)  # Increased from 18
+    ax.set_ylabel('μV', fontsize=22)  # Increased from 18
     ax.tick_params(axis='x', labelsize=20)  # Increased from 18
     ax.tick_params(axis='y', labelsize=20)  # Increased from 18
 
@@ -94,8 +92,14 @@ def plot_single_eeg(ax, eeg_data, sleep_stages, label, time_window_start, shade_
         plt.Line2D([0], [0], color=colors[2], lw=2, label='NREM'),
         #plt.Line2D([0], [0], color=colors[3], lw=2, label='REM'),
     ]
-    # Move legend higher by adjusting bbox_to_anchor value
-    ax.legend(handles=handles, loc='upper right', fontsize=18, bbox_to_anchor=(1.0, 1.25))
+    # Place legend outside plot on the right without background shading
+    ax.legend(
+        handles=handles,
+        loc='upper right',
+        fontsize=18,
+        bbox_to_anchor=(1.02, 1.08),
+        frameon=False,
+    )
     
     # Remove top and right spines
     ax.spines['top'].set_visible(False)
@@ -129,7 +133,7 @@ plt.subplots_adjust(left=0.05, right=0.95)
 # Display the plot
 plt.tight_layout()
 # Save as PNG and EPS
-output_path = '/Volumes/harris/volkan/somnotate-vlkuzun`/plots/likelihood_scoring/awake_nrem_likelihood_eeg_snippet_shading_sub-010'
+output_path = '/Volumes/harris/volkan/somnotate-vlkuzun/plots/likelihood_scoring/awake_nrem_likelihood_eeg_snippet_shading_sub-010'
 plt.savefig(f"{output_path}.png", dpi=600, bbox_inches='tight')
 plt.savefig(f"{output_path}.eps", format='eps', bbox_inches='tight')
 print(f"Figure saved as {output_path}.png with 600 DPI and as {output_path}.eps")

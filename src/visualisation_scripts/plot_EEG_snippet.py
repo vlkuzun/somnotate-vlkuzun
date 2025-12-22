@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+from stage_colors import STAGE_COLORS_BY_ID
+
 # Set global style for publication
 plt.rcParams.update({
     'font.family': 'Arial',         # Use Arial (or Helvetica as fallback)
@@ -36,12 +38,8 @@ df_slice = combined_df.iloc[start_time:end_time]
 downsample_factor = 1  # Adjust this factor based on how much you want to downsample
 df_slice_downsampled = df_slice.iloc[::downsample_factor].reset_index(drop=True)
 
-# Define colors for each sleep stage using tones of blue
-colors = {
-    1: '#E69F00',  # Golden yellow for WAKE
-    2: '#56B4E9',  # Sky blue for non-REM
-    3: '#CC79A7',  # Pink/magenta for REM
-}
+# Define colors for each sleep stage using the shared palette
+colors = dict(STAGE_COLORS_BY_ID)
 
 # Plot function for the EEG signal
 def plot_eeg(ax, eeg_data, sleep_stages, label):
@@ -70,7 +68,7 @@ def plot_eeg(ax, eeg_data, sleep_stages, label):
 
     ax.set_title(f'{label}')
     ax.set_yticks(np.arange(-500,505,500))
-    ax.set_ylabel('EEG (μV)')
+    ax.set_ylabel('μV')
     
     # Only move y-axis to origin, keep x-axis at bottom
     ax.spines['left'].set_position(('data', 0))
@@ -104,7 +102,7 @@ handles = [plt.Line2D([0], [0], color=colors[1], lw=2, label='Wake'),
 labels = [f'Stage {stage}' for stage in colors]
 
 # Adjust legend position to be above the plots
-fig.legend(handles=handles, loc='upper right', bbox_to_anchor=(0.91, 1.0), ncol=1)
+fig.legend(handles=handles, loc='upper right', bbox_to_anchor=(0.91, 1.0), ncol=1, frameon=False)
 
 plt.tight_layout(rect=[0, 0.05, 1, 0.95])  # Adjust layout to leave space for the legend and x-axis label
 
