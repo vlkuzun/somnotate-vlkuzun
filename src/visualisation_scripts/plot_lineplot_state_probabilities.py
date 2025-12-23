@@ -152,11 +152,11 @@ def plot_awake_and_non_rem(awake_data, non_rem_data, start_idx, end_idx, save_pa
 
     # Customize the plot - use font sizes from rcParams
     plt.xlabel('Time (seconds)')
-    plt.ylabel('Likelihood')
+    plt.ylabel('Probability')
     plt.yticks([0, 0.25, 0.5, 0.75, 1])
     
-    # Move legend to the center left of the plot
-    plt.legend(loc='center left', bbox_to_anchor=(0.0, 0.5))
+    # Move legend to the center left of the plot without frame
+    plt.legend(loc='center left', bbox_to_anchor=(0.0, 0.5), frameon=False)
     
     plt.grid(alpha=0.3)
     
