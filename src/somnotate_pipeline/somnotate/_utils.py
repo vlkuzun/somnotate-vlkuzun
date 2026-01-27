@@ -236,6 +236,16 @@ def _smooth(x, window_length, window='flat'):
 
 
 def _get_intervals(boolean_mask):
+    
+    # Convert to numpy array if necessary
+    boolean_mask = np.asarray(boolean_mask)
+    
+    # Handle scalar input
+    if boolean_mask.ndim == 0:
+        if boolean_mask:
+            return np.array([[0, 1]])
+        else:
+            return np.zeros((0, 2))
 
     # base case
     d = np.diff(boolean_mask.astype(int))
